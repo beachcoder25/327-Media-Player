@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main;
+package user.login;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -14,9 +14,9 @@ import javafx.scene.control.Label;
 
 /**
  *
- * @author Jonah
+ * @author corni
  */
-public class MainUiController implements Initializable {
+public class FXMLDocumentController implements Initializable {
     
     @FXML
     private Label label;
