@@ -1,0 +1,258 @@
+[
+   {
+      "remoteMethod":"validateAccount",
+      "objectName":"LoginServices",
+      "Params":[
+         {
+            "name":"username",
+            "type":"String"
+         },
+         {
+            "name":"password",
+            "type":"String"
+         }
+      ],
+      "callSemantic":"Maybe",
+      "returnType":"String"
+   },
+   {
+      "remoteMethod":"registerAccount",
+      "objectName":"LoginServices",
+      "Params":[
+         {
+            "name":"username",
+            "type":"String"
+         },
+         {
+            "name":"password",
+            "type":"String"
+         }
+      ],
+      "callSemantic":"Maybe",
+      "returnType":"String"
+   },
+   {
+      "remoteMethod":"getSongChunk",
+      "objectName":"SongDispatcher",
+      "param":{
+         "song":490183,
+         "fragment":2
+      }
+   },
+   {
+      "remoteMethod":"createPlaylist",
+      "objectName":"PlaylistServices",
+      "Params":[
+         {
+            "name":"playlist_name",
+            "type":"String"
+         },
+         {
+            "name":"account_id",
+            "type":"String"
+         }
+      ],
+      "callSemantic":"Maybe",
+      "returnType":"void"
+   },
+   {
+      "remoteMethod":"deletePlaylist",
+      "objectName":"PlaylistServices",
+      "Params":[
+         {
+            "name":"playlist_name",
+            "type":"String"
+         },
+         {
+            "name":"account_id",
+            "type":"String"
+         }
+      ],
+      "callSemantic":"Maybe",
+      "returnType":"void"
+   },
+   {
+      "remoteMethod":"addSongToPlaylist",
+      "objectName":"PlaylistServices",
+      "Params":[
+         {
+            "name":"id",
+            "type":"Integer"
+         },
+         {
+            "name":"playlist_name",
+            "type":"String"
+         },
+         {
+            "name":"account_id",
+            "type":"String"
+         }
+      ],
+      "callSemantic":"Maybe",
+      "returnType":"void"
+   },
+   {
+      "remoteMethod":"removeSongFromPlaylist",
+      "objectName":"PlaylistServices",
+      "Params":[
+         {
+            "name":"id",
+            "type":"Integer"
+         },
+         {
+            "name":"playlist_name",
+            "type":"String"
+         },
+         {
+            "name":"account_id",
+            "type":"String"
+         }
+      ],
+      "callSemantic":"Maybe",
+      "returnType":"void"
+   },
+   {
+      "remoteMethod":"getPlaylist",
+      "objectName":"PlaylistServices",
+      "Params":[
+         {
+            "name":"playlist_name",
+            "type":"String"
+         },
+         {
+            "name":"account_id",
+            "type":"String"
+         }
+      ],
+      "callSemantic":"Maybe",
+      "returnType":"String"
+   },
+   {
+      "remoteMethod":"getNormalPage",
+      "objectName":"MusicServices",
+      "Params":[
+         {
+            "name":"index",
+            "type":"Integer"
+         }
+      ],
+      "callSemantic":"Maybe",
+      "returnType":"String"
+   },
+   {
+      "remoteMethod":"getAlphaPage",
+      "objectName":"MusicServices",
+      "Params":[
+         {
+            "name":"index",
+            "type":"Integer"
+         }
+      ],
+      "callSemantic":"Maybe",
+      "returnType":"String"
+   },
+   {
+      "remoteMethod":"getRandomPage",
+      "objectName":"MusicServices",
+      "Params":[],
+      "callSemantic":"Maybe",
+      "returnType":"String"
+   },
+   {
+    "remoteMethod": "getSong",
+    "objectName": "MusicServices",
+    "Params": [
+      {
+        "name": "s",
+        "type": "String"
+      }
+    ],
+    "callSemantic": "Maybe",
+    "returnType": "String"
+  },
+  {
+    "remoteMethod": "getArtist",
+    "objectName": "MusicServices",
+    "Params": [
+      {
+        "name": "s",
+        "type": "String"
+      }
+    ],
+    "callSemantic": "Maybe",
+    "returnType": "String"
+  },
+  {
+    "remoteMethod": "getPlaylistNames",
+    "objectName": "PlaylistServices",
+    "Params": [
+      {
+        "name": "account_id",
+        "type": "String"
+      }
+    ],
+    "callSemantic": "Maybe",
+    "returnType": "String[]"
+	},
+	
+	
+	
+	
+	
+	
+	
+	
+	{
+    "remoteMethod": "createPlaylist",
+    "objectName": "PlaylistServices",
+    "Params": [
+      {
+        "name": "playlist_name",
+        "type": "String"
+      },
+      {
+        "name": "account_id",
+        "type": "String"
+      }
+
+    ],
+    "callSemantic": "Maybe",
+    "returnType": "void"
+  },
+  {
+    "remoteMethod": "deletePlaylist",
+    "objectName": "PlaylistServices",
+    "Params": [
+      {
+        "name": "playlist_name",
+        "type": "String"
+      },
+      {
+        "name": "account_id",
+        "type": "String"
+      }
+
+    ],
+    "callSemantic": "Maybe",
+    "returnType": "void"
+  },
+	
+	
+	
+  {
+    "remoteMethod": "getValidatedID",
+    "objectName": "LoginServices",
+    "Params": [
+      {
+        "name": "username",
+        "type": "String"
+      }
+    ],
+    "callSemantic": "Maybe",
+    "returnType": "String"
+  }
+	
+	
+	
+	
+]
