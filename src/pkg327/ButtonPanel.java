@@ -1,20 +1,25 @@
 
 package pkg327;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import static pkg327.PlayButton.thread;
-
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 /**
  *
  * @author taylo
@@ -23,11 +28,16 @@ public class ButtonPanel extends VBox{
     
     private PlayerWindow pw;
     private String playlist_name;
-    Proxy p = new Proxy();
+    private String account_id;
+    private ChoiceBox<Playlist> drop_down;
+    private HBox playlist_row;
+    private Proxy p = new Proxy();
     
     public ButtonPanel(String account_id, PlayerWindow pw) {
         
+        this.account_id = account_id;
         this.pw = pw;
+        
         
         this.setStyle("-fx-background-color:#000000;"
             + "-fx-border-color: #1CFF00;"
@@ -52,7 +62,7 @@ public class ButtonPanel extends VBox{
                     pw.getPage().makeAlphaPages(0);
                     
                 }
-            });
+        });
         
         Button rand = this.setupColors(new Button("Rand"));
         rand.setOnAction(new EventHandler<ActionEvent>() {
@@ -143,35 +153,11 @@ public class ButtonPanel extends VBox{
         });
         
         
-    
+        this.playlist_row = this.createDropDown();
         
         
         
         
-        
-        ChoiceBox<String> dropDown = new ChoiceBox();
-        
-        //dropDown.getItems().add("Apples");
-        
-        
-        
-        System.out.println(dropDown.getValue());
-        
-        PlaylistServices p = new PlaylistServices();
-        
-        String[] userPlaylists = p.getPlaylistNames("1234");
-        
-        for (int i = 0; i < userPlaylists.length; i++) {
-            dropDown.getItems().add(userPlaylists[i]);
-        }
-        
-        if(dropDown.getChildrenUnmodifiable().size() != 0)
-        dropDown.setValue(userPlaylists[0]);
-        
-        dropDown.setStyle("-fx-background-color:#000000;"
-            + "-fx-text-fill: #1CFF00;"
-            + "-fx-border-color: #1CFF00;"
-            + "-fx-border-width: 1px;");
         
         this.getChildren().addAll(
                 norm,
@@ -186,7 +172,7 @@ public class ButtonPanel extends VBox{
                 create_playlist,
                 delete_playlist_field,
                 delete_playlist,
-                dropDown,
+                this.playlist_row,
                 exit);
     }
     
@@ -221,12 +207,67 @@ public class ButtonPanel extends VBox{
         return b;
     }
     
+    public HBox createDropDown() {
+        
+        HBox row = new HBox();
+        
+        Text playlist_text = new Text("Playlists:  ");
+        playlist_text.setFill(Color.web("1CFF00"));
+        playlist_text.setFont(Font.font ("Verdana", 13));
+        row.getChildren().add(playlist_text);
+        
+        String[] params = {this.account_id};
+        JsonObject result = p.synchExecution("getAllPlaylists", params);
+        String json = result.get("ret").getAsString();
+        TypeToken<List<Playlist>> token = new TypeToken<List<Playlist>>() {};
+        
+        ArrayList<Playlist> playlist_list = new Gson().fromJson(json, token.getType());
+        
+        
+        drop_down = new ChoiceBox();
+        drop_down.setStyle("-fx-background-color:#000000;"
+            + "-fx-border-color: #1CFF00;"
+            + "-fx-border-width: 1px;");
+        
+        for (Playlist p : playlist_list) {
+            drop_down.getItems().add(p);
+        }
+        
+        
+        
+        row.getChildren().add(drop_down);
+        
+        Button b = new Button();
+        b.setText("Show");
+        b.setStyle("-fx-background-color:#000000;"
+            + "-fx-text-fill: #1CFF00;"
+            + "-fx-border-color: #1CFF00;"
+            + "-fx-border-width: 1px;");
+        b.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    if (drop_down.getValue() != null)
+                        pw.getPage().showPlaylist(drop_down.getValue());
+                }
+        });
+        
+        row.getChildren().add(b);
+        return row;
+    }
+    
+    public void refreshDropDrown() {
+        this.getChildren().remove(this.playlist_row);
+        this.playlist_row = this.createDropDown();
+        this.getChildren().add(this.getChildren().size()-1, this.playlist_row);
+    }
+    
+    /*
     public static void main(String[] args) throws SocketException {
         Proxy p = new Proxy();
         // creates playlist
             String[] params = {"a", "1234"};
         JsonObject result = p.synchExecution("createPlaylist", params);
     }
-            
+     */       
             
 }

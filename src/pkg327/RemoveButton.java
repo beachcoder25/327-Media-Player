@@ -1,6 +1,6 @@
-
 package pkg327;
 
+import com.google.gson.JsonObject;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -8,17 +8,13 @@ import javafx.scene.input.MouseEvent;
 
 /**
  *
- * @author taylo
+ * @author Taylor Meyer
  */
-public class AddButton extends Button{
+public class RemoveButton extends Button{
     
-    private PlaylistWindow pw;
-    private Page page;
-    
-    public AddButton(Page page, int song_id, String account_id) {
+    public RemoveButton(Page page, Playlist p, int song_id, String account_id) {
         
-        this.page = page;
-        this.setText("+");
+        this.setText("-");
         
         this.setStyle("-fx-background-color:#000000;"
             + "-fx-text-fill: #1CFF00;"
@@ -47,17 +43,21 @@ public class AddButton extends Button{
           }
         });
         
+        
+        
+        
         this.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
 
-                pw = new PlaylistWindow(song_id, account_id);
-                pw.showAndWait();
+                // remove logic
+                Proxy pr = new Proxy();
+                String[] params = {Integer.toString(song_id),p.getName(), account_id};
+                String json = pr.synchExecution("removeSongFromPlaylist", params).get("ret").getAsString();
                 page.getPlayerWindow().getButtonPanel().refreshDropDrown();
+                p.removeSong(song_id);
+                page.showPlaylist(p);
             }
         });
-        
     }
-    
-    
 }

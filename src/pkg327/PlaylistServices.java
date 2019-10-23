@@ -110,19 +110,14 @@ public class PlaylistServices {
         this.save(list);
     }
     
-    public String[] getPlaylistNames(String account_id) {
+    public String getAllPlaylists(String account_id) {
+        
         ArrayList<Account> list = this.getAccountList(account_id);
         Account A = this.getAccount(account_id, list);
         
-        ArrayList<Playlist> userPlaylists = A.getPlaylists();
-        
-        String[] playlistNames = new String[userPlaylists.size()];
-        
-        for (int i = 0; i < userPlaylists.size(); i++) {
-            playlistNames[i] = userPlaylists.get(i).getName();
-        }
-        
-        return playlistNames;
+        ArrayList<Playlist> playlists = A.getPlaylists();
+        String json = new Gson().toJson(playlists);
+        return json;
     }
     
     /**

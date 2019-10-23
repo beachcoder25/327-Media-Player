@@ -182,8 +182,10 @@
     "callSemantic": "Maybe",
     "returnType": "String"
   },
+  
+  
   {
-    "remoteMethod": "getPlaylistNames",
+    "remoteMethod": "getAllPlaylists",
     "objectName": "PlaylistServices",
     "Params": [
       {
@@ -192,7 +194,7 @@
       }
     ],
     "callSemantic": "Maybe",
-    "returnType": "String[]"
+    "returnType": "String"
 	},
 	
 	
@@ -250,6 +252,29 @@
     ],
     "callSemantic": "Maybe",
     "returnType": "String"
+  },
+  
+  {
+    "remoteMethod": "getPlaylistMeta",
+    "objectName": "MusicServices",
+    "Params": [
+      {
+        "name": "json",
+        "type": "String"
+      }
+    ],
+    "callSemantic": "Maybe",
+    "returnType": "String"
+  },
+  
+  
+  
+  {
+    "remoteMethod": "save",
+    "objectName": "LoginServices",
+    "Params": [],
+    "callSemantic": "Maybe",
+    "returnType": "void"
   }
 	
 	

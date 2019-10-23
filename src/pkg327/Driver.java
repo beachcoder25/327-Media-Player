@@ -15,32 +15,22 @@ import javafx.stage.Stage;
  */
 public class Driver extends Application {
     
-    LoginWindow lw;
-    PlayerWindow pw;
+    private LoginWindow lw;
+    private PlayerWindow pw;
     
     @Override
     public void start(Stage primaryStage) {
         
         // DRIVER SHOULD BE THIS 
-//        lw = new LoginWindow();
-//        lw.showAndWait();
-//        String user = lw.getValidatedUser();
-//        System.out.println("Driver validated user:" + user);
-//        
-//        if (user == null) // didnt validate and window closed -> exit
-//            System.exit(0);
-//        else // open player
-//            pw = new PlayerWindow(user);
-            
-        // To test
-        String username = "TaylorM"; // temp to test, would get from login services
-        PlayerWindow pw = new PlayerWindow(username);
+        lw = new LoginWindow();
+        String user = lw.getValidatedUser();
+        System.out.println("Driver validated user:" + user);
         
-        
-        //LoginWindow lw = new LoginWindow();
-        //lw.showAndWait();
-        
-        //System.exit(0);
+        if (user == null) // didnt validate and window closed -> exit
+            System.exit(0);
+        else // open player
+            pw = new PlayerWindow(user);
+        System.exit(0);
     }
 
     /**

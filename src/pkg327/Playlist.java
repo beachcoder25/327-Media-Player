@@ -79,4 +79,9 @@ public class Playlist {
     public void removeSong(int i){
         this.id_list.remove(Integer.valueOf(i));
     }
+    
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }

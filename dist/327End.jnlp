@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="327End.jar" size="72639" download="eager" />
+    <jar href="327End.jar" size="80897" download="eager" />
     <jar href="lib\gson-2.8.5.jar" size="241622" download="eager" />
     <jar href="lib\jl1.0.1.jar" size="105363" download="eager" />
   </resources>

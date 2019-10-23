@@ -20,14 +20,13 @@ public class PlayerWindow extends BorderPane{
     
     public PlayerWindow(String username) {
         
-        //System.out.println("New player window");
-        this.account_id = "1234";
-        // get id from login services
-//        String[] params = {username};
-//        JsonObject result = p.synchExecution("getValidatedID", params);
-//        this.account_id = result.get("ret").getAsString();
-//        System.out.println("New player window got past synch");
-        
+        // Get the user ID from LoginServices
+        String[] params = {username};
+        JsonObject result = p.synchExecution("getValidatedID", params);
+        this.account_id = result.get("ret").getAsString();
+        System.out.println("ID retrieved for " + username + ": " +
+                this.account_id);
+
         
         
         
@@ -39,7 +38,7 @@ public class PlayerWindow extends BorderPane{
         this.top = new TitleBar(username);
         this.left = new ButtonPanel(account_id, this);
         
-        this.center = new Page(account_id);
+        this.center = new Page(this, account_id);
         //this.center.makeAlphaPages(0);
         
         this.setTop(top);
@@ -49,10 +48,14 @@ public class PlayerWindow extends BorderPane{
         Stage stage = new Stage();
         stage.setTitle("Media Player");
         stage.setScene(new Scene(this, 1240, 800));
-        stage.show();
+        stage.showAndWait();
     }
     
     public Page getPage() {
         return this.center;
+    }
+    
+    public ButtonPanel getButtonPanel() {
+        return this.left;
     }
 }

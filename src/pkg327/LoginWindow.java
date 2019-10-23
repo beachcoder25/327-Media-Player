@@ -52,15 +52,15 @@ public class LoginWindow extends Stage{
     
     private String validated_user = null;
     
-    Proxy p;
+    private Proxy p;
     
     public LoginWindow() {
         p = new Proxy();
-        // Load accounts from file
+        
         // Setup all components/nodes
         setupComponents();
         this.setTitle("Media Player");
-        //this.showAndWait();
+        this.showAndWait();
     }
     
     public void processLogin(String username, String password)

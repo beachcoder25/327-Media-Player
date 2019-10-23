@@ -3,6 +3,21 @@
     "username": "TaylorM",
     "password": "asdf",
     "id": "1234",
-    "playlists": []
+    "playlists": [
+      {
+        "name": "a",
+        "id_list": [
+          162891
+        ]
+      },
+      {
+        "name": "b",
+        "id_list": []
+      },
+      {
+        "name": "c",
+        "id_list": []
+      }
+    ]
   }
 ]

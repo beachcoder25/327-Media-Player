@@ -31,8 +31,10 @@ public class PlaylistWindow extends Stage{
         TextField field = new TextField();
         field.setPromptText("enter playlist name..");
         field.setStyle("-fx-background-color:#323232;");
+        field.setStyle("-fx-text-inner-color: red;");
         
         Button okay = new Button();
+        okay.setText("Okay");
         okay.setStyle("-fx-background-color:#000000;"
             + "-fx-text-fill: #1CFF00;"
             + "-fx-border-color: #1CFF00;"
@@ -48,6 +50,7 @@ public class PlaylistWindow extends Stage{
                                 account_id
                                 };
                 JsonObject result = p.synchExecution("addSongToPlaylist", params);
+                //makeCallToSave();
                 close();
             }
         });
@@ -55,8 +58,14 @@ public class PlaylistWindow extends Stage{
         gp.add(field, 1, 1);
         gp.add(okay, 1, 2);
         
-        this.setScene(new Scene(gp, 40, 40));
-        this.show();
+        this.setScene(new Scene(gp, 100, 100));
+        //this.show();
+    }
+    
+    private void makeCallToSave() {
+        
+        String[] params = {};
+        String json = p.synchExecution("save", params).get("ret").getAsString();
     }
     
 }

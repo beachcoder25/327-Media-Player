@@ -124,23 +124,6 @@ public class MusicServices {
         return gson.toJson(metaList);
     }
     
-    
-        /**
-     * A search function for a programmer to search specific songs by id value
-     * @param id
-     * @return 
-     */
-//    public MusicMeta getSong(int id){
-//
-//        for (MusicMeta M : meta_data_unsorted){
-//            if(M.getRelease().getId() == id){
-//                System.out.println("Found id: " + id);
-//                return M;
-//            }
-//        }
-//        return null;
-//    }
-    
     public String getNormalPage(int index) {
         
         ArrayList<MusicMeta> page = new ArrayList();
@@ -189,5 +172,27 @@ public class MusicServices {
         
         Gson gson = new Gson();
         return gson.toJson(meta);
+    }
+    
+    public String getPlaylistMeta(String json) {
+        
+        Gson gson = new Gson();
+        
+        //TypeToken<List<Playlist>> token = new TypeToken<List<Playlist>>(){};
+        Playlist p = new Gson().fromJson(json, Playlist.class);
+        
+        
+        ArrayList<MusicMeta> meta_list = new ArrayList();
+        for (int id : p.getList()) {
+            for (MusicMeta M : this.meta_data_unsorted) {
+                if (M.getRelease().getId() == id) {
+                    System.out.println("Adding song: " + M.getRelease().getId());
+                    meta_list.add(M);
+                    break;
+                }
+            }
+        }
+        System.out.println("Size of meta: " + meta_list.size());
+        return gson.toJson(meta_list);
     }
 }
