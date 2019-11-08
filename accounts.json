@@ -5,18 +5,36 @@
     "id": "1234",
     "playlists": [
       {
-        "name": "a",
-        "id_list": [
-          162891
-        ]
-      },
-      {
         "name": "b",
-        "id_list": []
+        "id_list": [
+          514953,
+          668390
+        ]
       },
       {
         "name": "c",
         "id_list": []
+      },
+      {
+        "name": "",
+        "id_list": []
+      },
+      {
+        "name": "test",
+        "id_list": []
+      }
+    ]
+  },
+  {
+    "username": "jonah",
+    "password": "1234",
+    "id": "1912",
+    "playlists": [
+      {
+        "name": "MyList",
+        "id_list": [
+          570508
+        ]
       }
     ]
   }
