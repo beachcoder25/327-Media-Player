@@ -41,23 +41,32 @@ public class DFSCommand
                 System.out.println("***End List***");
             }
             if (result[0].equals("create")) {
-                System.out.println("Enter a file name:");
+                System.out.println("Enter name of file to be added");
                 String fileName = buffer.readLine();
-                dfs.create(fileName, "3000");
+                
+                System.out.println("Enter size of file to be created");
+                String fileSize = buffer.readLine();
+                dfs.create(fileName, fileSize); 
             }
             if (result[0].equals("delete")) {
                 System.out.println("Enter a file to be deleted");
                 String fileName = buffer.readLine();
                 dfs.delete(fileName);
             }
+            if (result[0].equals("move")) {
+                System.out.println("Enter a file whose name you want to change");
+                String oldFileName = buffer.readLine();
+                System.out.println("Enter a new name for this file");
+                String newFileName = buffer.readLine();
+                dfs.move(oldFileName, newFileName);
+            }
+            
             if (result[0].equals("touch"))
             {
                 // WORK ON THIS!!!
                 // Verify that parameters are greater than 1, for all of the functions
                 // Validate argument is provided
-                
-                //Call DFS to create file
-                //dfs.create();  // Create the file and give the parameter, which is the name of the file     
+  
             }
             
             if (result[0].equals("leave"))
@@ -74,6 +83,8 @@ public class DFSCommand
     
     static public void main(String args[]) throws Exception
     {
+        //application.args="5555" "5556"
+        
         Gson gson = new Gson();
         RemoteInputFileStream in = new RemoteInputFileStream("music.json", false);
         in.connect();

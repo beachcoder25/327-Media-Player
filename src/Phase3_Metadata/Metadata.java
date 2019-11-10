@@ -101,6 +101,7 @@ public class Metadata implements IMetaData {
         // set file attributes
         mFile.setName(fileName);
         mFile.setSize(size);
+        mFile.setCreationTS(ts);
         mFile.setReadTS(ts);
         mFile.setWriteTS(ts);
         mFile.setMaxPageSize(maxPageSize);

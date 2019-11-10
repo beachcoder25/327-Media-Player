@@ -6,7 +6,7 @@
     "readTS": "12569537732",
     "writeTS": "1256953732",
     "referenceCount": "1",
-    "numberOfPages": 7,
+    "numberOfPages": 8,
     "maxPageSize": 1024,
     "pages": [
       {
@@ -64,6 +64,14 @@
         "readTS": "12569537732",
         "writeTS": "12569537732",
         "referenceCount": "0"
+      },
+      {
+        "guid": "70666517",
+        "size": "0",
+        "creationTS": "12569537732",
+        "readTS": "12569537732",
+        "writeTS": "12569537732",
+        "referenceCount": "0"
       }
     ]
   },
@@ -73,6 +81,17 @@
     "creationTS": "82238",
     "readTS": "82238",
     "writeTS": "82238",
+    "referenceCount": "",
+    "numberOfPages": 0,
+    "maxPageSize": 1024,
+    "pages": []
+  },
+  {
+    "name": "nuPhile",
+    "size": "5555",
+    "creationTS": "81026",
+    "readTS": "81026",
+    "writeTS": "81026",
     "referenceCount": "",
     "numberOfPages": 0,
     "maxPageSize": 1024,
