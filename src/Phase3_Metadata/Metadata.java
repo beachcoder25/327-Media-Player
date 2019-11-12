@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Serializable;
 import static java.lang.Integer.parseInt;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -24,18 +25,43 @@ import java.util.Set;
  *
  * @author Jonah
  */
-public class Metadata implements IMetaData {
+public class Metadata implements IMetaData,  Serializable {
 
+    
+    static class myTest
+    {
+        public String name;
+    }
     // Make this a data structure
     // DFS calls methods in Metadata
     public static void main(String[] args) {
 
+        //myTest m = new myTest();
+        //m.name = "AA";
+        
+                
         Metadata mD = new Metadata();
+        
+        
 //        String name = "MusicJson";
 //        System.out.println(mD.getMetafilePages(name));
-        //mD.create("999888", "3000");
+        mD.create("999888", "3000");
+       // mD.append("999888");
         //mD.delete("999888");
-        System.out.println("Int: " + mD.append("MusicJson"));
+        //mD.create("NEWfile", "7000");
+        Gson gson = new Gson();
+        
+        
+        System.out.println(mD.serializeMetadata());
+        
+        String s = mD.serializeMetadata();
+        
+        Metadata mD2 = gson.fromJson(s, Metadata.class);
+        
+        mD.delete("999888");
+        System.out.println(mD.serializeMetadata());
+        System.out.println(mD2.serializeMetadata());
+        //System.out.println("Int: " + mD.append("MusicJson"));
         
         //mD.move("999888", "SpookySong");
         
@@ -46,31 +72,44 @@ public class Metadata implements IMetaData {
     }
 
     private List<Metafile> metafile;
-    private TypeToken<List<Metafile>> token = new TypeToken<List<Metafile>>() {
-    };
-    private String pageString = "";
-    private final String metaDataJSON = "metadata.json";
-    private final int maxPageSize = 1024;
+//    private TypeToken<List<Metafile>> token = new TypeToken<List<Metafile>>() {
+//    };
+    public String pageString = "";
+    public  String metaDataJSON = "metadata.json";
+    public  int maxPageSize = 1024;
 
     public Metadata(List<Metafile> metafile) {
         this.metafile = metafile;
     }
 
     public Metadata() {
-        //this.metafile = new ArrayList<Metafile>();
-        this.deserializeMetadata();
+        this.metafile = new ArrayList<Metafile>();
+        //this.deserializeMetadata();
     }
 
-    private void deserializeMetadata() {
+//    private void deserializeMetadata() {
+//
+//        try (Reader read = new FileReader("metadata.json")) {
+//
+//            metafile = new Gson().fromJson(read, token.getType());
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//    
+     public String serializeMetadata() {
 
-        try (Reader read = new FileReader("metadata.json")) {
+       
+            Gson gson = new Gson();
+            return gson.toJson(this, Metadata.class);
 
-            metafile = new Gson().fromJson(read, token.getType());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        
+        
+        
     }
+     
+     
 
     public String getMetafilePages(String name) {
 

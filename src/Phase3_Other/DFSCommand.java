@@ -61,8 +61,37 @@ public class DFSCommand
                 dfs.move(oldFileName, newFileName);
             }
             
+            if (result[0].equals("append")) {
+                System.out.println("Enter a file whose name you want to append");
+                String oldFileName = buffer.readLine();
+                System.out.println("Give path of file"); // logical file
+                String path = buffer.readLine();
+                RemoteInputFileStream rI = new RemoteInputFileStream(path);
+                dfs.append(oldFileName, rI);
+                
+            }
+            
             if (result[0].equals("touch"))
             {
+                // WORK ON THIS!!!
+                // Verify that parameters are greater than 1, for all of the functions
+                // Validate argument is provided
+  
+            }
+            
+            if (result[0].equals("append"))
+            {
+                
+                //application.args = "2001" "2000"
+                
+                
+                System.out.println("Provide full filepath of music.json and append directory of page");
+                String filePath = buffer.readLine();
+                RemoteInputFileStream data = new RemoteInputFileStream(filePath, false);
+                System.out.println("Enter name for this file");
+                String fileName = buffer.readLine();
+                
+                dfs.append(fileName, data);
                 // WORK ON THIS!!!
                 // Verify that parameters are greater than 1, for all of the functions
                 // Validate argument is provided
@@ -86,11 +115,11 @@ public class DFSCommand
         //application.args="5555" "5556"
         
         Gson gson = new Gson();
-        RemoteInputFileStream in = new RemoteInputFileStream("music.json", false);
-        in.connect();
-        Reader targetReader = new InputStreamReader(in);
-        JsonReader jreader = new  JsonReader(targetReader);
-        //Music[] music = gson.fromJson(jreader, Music[].class);
+//        RemoteInputFileStream in = new RemoteInputFileStream("music.json", false); // Ask the user for path of music.JSOn file, page
+//        in.connect();
+//        Reader targetReader = new InputStreamReader(in);
+//        JsonReader jreader = new  JsonReader(targetReader);
+//        //Music[] music = gson.fromJson(jreader, Music[].class);
         
         if (args.length < 1 ) {
             throw new IllegalArgumentException("Parameter: <port> <portToJoin>");

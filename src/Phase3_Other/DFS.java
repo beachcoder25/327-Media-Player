@@ -160,21 +160,28 @@ public class DFS
     public void writeMetaData(Metadata filesJson) throws Exception
     {
         long guid = md5("Metadata"); // Metadata sector 
+        
+        Gson gson = new Gson();
+        //gson.
+        //gson.fromJson(filesJson, Metadata.class).toJson()
+        //ystem.out.println(gson.fromJson(filesJson, Metadata.class).toJson());
+        
         ChordMessageInterface peer = chord.locateSuccessor(guid); // Dont worry about this too much 
         
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+       // Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        //String s = gson.toJson(filesJson); // Takes JSON object as a string, use GSON prettyBuilder
+        //stem.out.println(gson.toJson(filesJson));
+        peer.put(guid, filesJson.serializeMetadata());
         
-        peer.put(guid, gson.toJson(filesJson));
-        
-        String s = gson.toJson(filesJson); // Takes JSON object as a string, use GSON prettyBuilder
-        try{
-            // Create writer, write, close.
-            FileWriter write = new FileWriter("metadata.json", false);
-            write.write(s);
-            write.close();
-        }catch(IOException e){
-            e.printStackTrace();
-        }
+        //String s = gson.toJson(filesJson); // Takes JSON object as a string, use GSON prettyBuilder
+//        try{
+//            // Create writer, write, close.
+//            FileWriter write = new FileWriter("metadata.json", false);
+//            write.write(s);
+//            write.close();
+//        }catch(IOException e){
+//            e.printStackTrace();
+//        }
     }
    
 /**
