@@ -217,7 +217,7 @@ public class DFS
   *
  * @param filename Name of the file
  */
-    public void create(String fileName, String fileSize) throws Exception
+    public void create(String fileName, long fileSize) throws Exception
     {
          // TODO: Create the file fileName by adding a new entry to the Metadata
         // Write Metadata
@@ -276,7 +276,7 @@ public class DFS
         // data passed in is the new page
         // read metadata
         Metadata mData = readMetaData();
-        int pageGUID = mData.append(filename);
+        int pageGUID = mData.append(filename, data);
         chord.locateSuccessor(pageGUID);
         chord.put(pageGUID, data);
         writeMetaData(mData);

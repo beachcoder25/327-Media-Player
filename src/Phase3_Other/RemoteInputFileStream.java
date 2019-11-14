@@ -25,6 +25,7 @@ public class RemoteInputFileStream extends InputStream implements Serializable {
     public InputStream input;
     public Semaphore sem;
     private static int BUFFER_LENGTH = 1<< 16;
+    public double fileSize;
     /**
      * It stores a buffer with FRAGMENT_SIZE bytes for the current reading.
      * This variable is useful for UDP sockets. Thus bur is the datagram
@@ -73,6 +74,8 @@ public class RemoteInputFileStream extends InputStream implements Serializable {
  */
     public  RemoteInputFileStream(String pathName, boolean deleteAfter) throws FileNotFoundException, IOException    {
         File file = new File(pathName);
+        //System.out.println("ActualFileSize: " + ( java.lang.Math.ceil((double) file.length() / 1024 )));
+        fileSize = ( java.lang.Math.ceil(file.length() / 1024 )); 
         total = (int)file.length();
         pos = 0;
 

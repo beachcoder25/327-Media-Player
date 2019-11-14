@@ -1,10 +1,12 @@
 package Phase3_Metadata;
 
+import Phase3_Other.RemoteInputFileStream;
 import Server.Account;
 import Server.Playlist;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -45,7 +47,7 @@ public class Metadata implements IMetaData,  Serializable {
         
 //        String name = "MusicJson";
 //        System.out.println(mD.getMetafilePages(name));
-        mD.create("999888", "3000");
+        mD.create("999888", 3000);
        // mD.append("999888");
         //mD.delete("999888");
         //mD.create("NEWfile", "7000");
@@ -76,7 +78,7 @@ public class Metadata implements IMetaData,  Serializable {
 //    };
     public String pageString = "";
     public  String metaDataJSON = "metadata.json";
-    public  int maxPageSize = 1024;
+    public  int maxPageSize = 4096;
 
     public Metadata(List<Metafile> metafile) {
         this.metafile = metafile;
@@ -129,7 +131,7 @@ public class Metadata implements IMetaData,  Serializable {
     }
 
     @Override
-    public void create(String fileName, String size) {
+    public void create(String fileName, long size) {
         // create file
         Metafile mFile = new Metafile();
 
@@ -192,7 +194,7 @@ public class Metadata implements IMetaData,  Serializable {
     }
 
     @Override
-    public int append(String fileName) {
+    public int append(String fileName, RemoteInputFileStream data) {
         Page newPage = new Page();
         
         long guid;
@@ -214,14 +216,15 @@ public class Metadata implements IMetaData,  Serializable {
                 newPage.setReadTS(mF.getCreationTS());
                 newPage.setWriteTS(mF.getCreationTS());
                 
-                int temp = parseInt(mF.getSize()) - mF.getPageSizeSum();
+                long temp = mF.getSize() - (long) data.fileSize;
+                
                 
                 if(temp < 0){
-                    newPage.setSize(String.valueOf(0));
+                    newPage.setSize(0);
                     
                 }
                 
-                newPage.setSize(String.valueOf(temp));
+                newPage.setSize(((long) data.fileSize) + 1);
                 newPage.setReferenceCount("0");
                 
                 

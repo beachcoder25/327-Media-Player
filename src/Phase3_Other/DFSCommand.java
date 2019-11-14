@@ -4,6 +4,7 @@ package Phase3_Other;
 import java.io.*;
 import com.google.gson.*;
 import com.google.gson.stream.*;
+import static java.lang.Long.parseLong;
 
 
 
@@ -74,7 +75,7 @@ public class DFSCommand
                 String fileName = buffer.readLine();
                 
                 System.out.println("Enter size of file to be created");
-                String fileSize = buffer.readLine();
+                long fileSize = parseLong(buffer.readLine());
                 dfs.create(fileName, fileSize); 
   
             }

@@ -4,6 +4,7 @@ import Server.Catalog;
 import Server.Param;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -54,10 +55,23 @@ public class Tester {
 
     public static void main(String[] args){
      
-        Tester tester = new Tester();
+        String FILE_NAME = "C:\\Users\\corni\\Desktop\\git-repos\\327-Media-Player\\music1.json";
+        File file = new File(FILE_NAME);
         
-        String name = "MusicJson";
-        System.out.println(tester.getMetafilePages(name));
+        System.out.println(getFileSizeKiloBytes(file));
+        
         
     }
+    
+    private static String getFileSizeMegaBytes(File file) {
+		return (double) file.length() / (1024 * 1024) + " mb";
+	}
+	
+	private static String getFileSizeKiloBytes(File file) {
+		return ( java.lang.Math.ceil((double) file.length() / 1024 )) + "  kb";
+	}
+
+	private static String getFileSizeBytes(File file) {
+		return file.length() + " bytes";
+	}
 }

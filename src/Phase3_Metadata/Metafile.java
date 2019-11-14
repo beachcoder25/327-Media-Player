@@ -16,7 +16,7 @@ import java.util.List;
 public class Metafile {
     
     private String name;
-    private String size;
+    private long size;
     private String creationTS;
     private String readTS;
     private String writeTS;
@@ -25,21 +25,11 @@ public class Metafile {
     private int maxPageSize;
     private List<Page> pages;
 
-    public Metafile(String name, String size, String creationTS, String readTS, String writeTS, String referenceCount, int numberOfPages, int maxPageSize, List<Page> pages) {
-        this.name = name;
-        this.size = size;
-        this.creationTS = creationTS;
-        this.readTS = readTS;
-        this.writeTS = writeTS;
-        this.referenceCount = referenceCount;
-        this.numberOfPages = numberOfPages;
-        this.maxPageSize = maxPageSize;
-        this.pages = pages;
-    }
+
     
     public Metafile() {
         this.name = "";
-        this.size = "";
+        this.size = 0;
         this.creationTS = "";
         this.readTS = "";
         this.writeTS = "";
@@ -58,11 +48,11 @@ public class Metafile {
         this.name = name;
     }
 
-    public String getSize() {
+    public long getSize() {
         return size;
     }
 
-    public void setSize(String size) {
+    public void setSize(long size) {
         this.size = size;
     }
 
@@ -136,7 +126,7 @@ public class Metafile {
      
         int total = 0;
         for(Page page : this.pages){
-            total += parseInt(page.getSize());
+            total += page.getSize();
         }
         
         return total;
