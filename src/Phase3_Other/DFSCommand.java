@@ -40,14 +40,7 @@ public class DFSCommand
                 System.out.println(dfs.lists());    
                 System.out.println("***End List***");
             }
-            if (result[0].equals("create")) {
-                System.out.println("Enter name of file to be added");
-                String fileName = buffer.readLine();
-                
-                System.out.println("Enter size of file to be created");
-                String fileSize = buffer.readLine();
-                dfs.create(fileName, fileSize); 
-            }
+            
             if (result[0].equals("delete")) {
                 System.out.println("Enter a file to be deleted");
                 String fileName = buffer.readLine();
@@ -61,21 +54,28 @@ public class DFSCommand
                 dfs.move(oldFileName, newFileName);
             }
             
-            if (result[0].equals("append")) {
-                System.out.println("Enter a file whose name you want to append");
-                String oldFileName = buffer.readLine();
-                System.out.println("Give path of file"); // logical file
-                String path = buffer.readLine();
-                RemoteInputFileStream rI = new RemoteInputFileStream(path);
-                dfs.append(oldFileName, rI);
-                
-            }
+//            if (result[0].equals("append")) {
+//                System.out.println("Enter a file whose name you want to append");
+//                String oldFileName = buffer.readLine();
+//                System.out.println("Give path of file"); 
+//                String path = buffer.readLine();
+//                RemoteInputFileStream rI = new RemoteInputFileStream(path);
+//                dfs.append(oldFileName, rI);
+//                
+//            }
             
             if (result[0].equals("touch"))
             {
                 // WORK ON THIS!!!
                 // Verify that parameters are greater than 1, for all of the functions
                 // Validate argument is provided
+                
+                System.out.println("Enter name of file to be added");
+                String fileName = buffer.readLine();
+                
+                System.out.println("Enter size of file to be created");
+                String fileSize = buffer.readLine();
+                dfs.create(fileName, fileSize); 
   
             }
             
@@ -85,7 +85,7 @@ public class DFSCommand
                 //application.args = "2001" "2000"
                 
                 
-                System.out.println("Provide full filepath of music.json and append directory of page");
+                System.out.println("Provide full filepath of music.json and append directory of page"); // logical file
                 String filePath = buffer.readLine();
                 RemoteInputFileStream data = new RemoteInputFileStream(filePath, false);
                 System.out.println("Enter name for this file");
