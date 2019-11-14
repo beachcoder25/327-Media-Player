@@ -39,28 +39,56 @@ public class Search {
         String fp3 = "folder3\\music.json";
         
         // Create 3 objects of SearchThread class, pass filepath, and target
-        SearchThread t1 = new SearchThread(fp1, this.songname);
-        SearchThread t2 = new SearchThread(fp2, this.songname);
-        SearchThread t3 = new SearchThread(fp3, this.songname);
+        SearchThread s1 = new SearchThread(fp1, this.songname);
+        SearchThread s2 = new SearchThread(fp2, this.songname);
+        SearchThread s3 = new SearchThread(fp3, this.songname);
         
         // SearchThread class implements Runnable (not extends Thread)
         // So we create three new threads, and pass them the Runnable class
         //      and call Thread.start() which will call SearchThread overrided
         //      run function, which will all go concurrently
-        new Thread(t1).start();
-        new Thread(t2).start();
-        new Thread(t3).start();
+        
+        // list of thread
+        ArrayList<Thread> threadlist = new ArrayList();
+        
+        // create thread, add to list
+        Thread t1 = new Thread(s1);
+        threadlist.add(t1);
+        
+        Thread t2 = new Thread(s2);
+        threadlist.add(t2);
+        
+        Thread t3 = new Thread(s3);
+        threadlist.add(t3);
+        
+        
+        // thread.start every thread in list
+        for(Thread T : threadlist) {
+            T.start();
+        }
+        
+        
+        // thread.join every thread in list
+        try{
+            for(Thread T : threadlist) {
+                T.join();
+        }
+        }catch(InterruptedException E){
+            E.printStackTrace();
+        }
+        
+        
         
         
         // need to change to join later instead of sleep
         // sleep 5 seconds to wait for threads
-        try{
-            
-            TimeUnit.SECONDS.sleep(5);
-        
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try{
+//            
+//            TimeUnit.SECONDS.sleep(3);
+//        
+//        }catch (Exception e) {
+//            e.printStackTrace();
+//        }
         
         
         // compile results
@@ -68,20 +96,20 @@ public class Search {
         
         // each thread might not return anything because they are smaller
         // portions of the master, so we need to check for null first
-        if(t1.getResult() != null){
-        for(MusicMeta M : t1.getResult()) {
+        if(s1.getResult() != null){
+        for(MusicMeta M : s1.getResult()) {
             song_names.add(M.getSong().getTitle());
         }
         }
         
-        if(t2.getResult() != null){
-        for(MusicMeta M : t2.getResult()) {
+        if(s2.getResult() != null){
+        for(MusicMeta M : s2.getResult()) {
             song_names.add(M.getSong().getTitle());
         }
         }
         
-        if(t3.getResult() != null){
-        for(MusicMeta M : t3.getResult()) {
+        if(s3.getResult() != null){
+        for(MusicMeta M : s3.getResult()) {
             song_names.add(M.getSong().getTitle());
         }
         }
