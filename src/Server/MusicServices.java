@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-
 /**
  *
  * @authors nicka, jonah
@@ -27,15 +26,16 @@ public class MusicServices {
     // Sorted list
     ArrayList<MusicMeta> meta_data_sorted;
     // SearchDriver
-    private SearchDriver searchDriver;
+    //private SearchDriver searchDriver;
     // Metadata result from SearchDriver
     ArrayList<MusicMeta> meta_data_result;
 
+    DFS dfs;
+    
     /**
      * Default constructor. 
      */
     public MusicServices() {
-
     }
     
     /**
@@ -48,10 +48,11 @@ public class MusicServices {
     }
     
     
-    public String getAllEntries(String keyword) throws Exception
+    
+    public String getAllEntries(String keyword, String kt) throws Exception
     {
-        DFS dfs = new DFS(2000);
-        Metafile f = dfs.searchFile("music");
+        //DFS dfs = new DFS(2000);
+        Metafile f = dfs.searchFile("musicJSON");
         int n = f.getNumberOfPages();
         // Create n threads
         ArrayList<SearchPeerThread> spt = new ArrayList();
@@ -64,8 +65,8 @@ public class MusicServices {
               ChordMessageInterface peer = dfs.chord.locateSuccessor(p.guid);
               
               //ChordMessageInterface peer, Long guid, String keyword
-              SearchPeerThread pt = new SearchPeerThread(peer, p.guid, keyword);
-              
+              SearchPeerThread pt = new SearchPeerThread(peer, p.guid, keyword, kt);
+              spt.add(pt);
               Thread T = new Thread(pt);
               threads.add(T);
               T.start();
@@ -78,15 +79,19 @@ public class MusicServices {
             t.join();
         
         for (SearchPeerThread r : spt) {
+            System.out.println("2 Thread results size: " + r.results.size());
+            if (r.results == null) {}
+            else {
             for (int i = 0; i < r.results.size(); i++) {
                 results.add(r.results.get(i));
+            }
             }
             
         }
             //append thread.getResult();
-                
+              System.out.println("Size: " + results.size());
         for (MusicMeta M : results) {
-            System.out.println(M.getSong().getTitle());
+            System.out.println(M.getSong().getTitle() + " - " + M.getArtist().getName());
         }
             
         int j = 0;
@@ -105,8 +110,8 @@ public class MusicServices {
         ArrayList<MusicMeta> metaList = new ArrayList();
         
         
-        searchDriver = new SearchDriver(searchString);
-        meta_data_result = searchDriver.execute();
+        //searchDriver = new SearchDriver(searchString);
+        //meta_data_result = searchDriver.execute();
         
         int counter = 0;
 
@@ -130,8 +135,8 @@ public class MusicServices {
 
         ArrayList<MusicMeta> metaList = new ArrayList();
         
-        searchDriver = new SearchDriver(searchString);
-        meta_data_result = searchDriver.execute();
+        //searchDriver = new SearchDriver(searchString);
+        //meta_data_result = searchDriver.execute();
         
         int counter = 0;
 
@@ -222,11 +227,18 @@ public class MusicServices {
         return gson.toJson(meta_list);
     }
     
+    public void setDFS(DFS dfs) {
+        this.dfs = dfs;
+    }
+    
     public static void main(String[] args) throws Exception {
         
+        DFS dfs = new DFS(2000);
         MusicServices ms = new MusicServices();
-        ms.getAllEntries("did");
-        
+        ms.setDFS(dfs);
+        ms.getAllEntries("did", "SONG");
+        System.out.println("\n\n\n");
+        ms.getAllEntries("cas", "ARTIST");
     }
     
 }

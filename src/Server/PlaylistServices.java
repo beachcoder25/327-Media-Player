@@ -154,7 +154,7 @@ public class PlaylistServices {
             }
         }
         
-        MusicServices ms = new MusicServices();
+        //MusicServices ms = new MusicServices();
         
 //        for(int id : P.getList()) {
 //            for(MusicMeta M : ms.getMetaData()) {

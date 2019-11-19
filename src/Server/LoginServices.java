@@ -1,6 +1,10 @@
 
 package Server;
 
+import Phase3_Metadata.Metafile;
+import Phase3_Metadata.Page;
+import Phase3_Other.ChordMessageInterface;
+import Phase3_Other.DFS;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -8,6 +12,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -26,6 +31,8 @@ public class LoginServices {
     
     // User that successfull logged in.
     private Account current_account;
+    
+    DFS dfs;
     
     /**
      * Default constructor.
@@ -150,4 +157,67 @@ public class LoginServices {
         }
         return null;
     }
+    
+    public String getAllEntries(String username, String password) throws RemoteException, InterruptedException {
+        //DFS dfs = new DFS(2000);
+        Metafile f = dfs.searchFile("accounts");
+        int n = f.getNumberOfPages();
+        // Create n threads
+        ArrayList<SearchPeerThreadA> spt = new ArrayList();
+        ArrayList<Thread> threads = new ArrayList();
+        
+        for (int i=0; i<n; i++)
+        {
+              Page p = f.getPage(i);
+              
+              ChordMessageInterface peer = dfs.chord.locateSuccessor(p.guid);
+              
+              //ChordMessageInterface peer, Long guid, String keyword
+              SearchPeerThreadA pt = new SearchPeerThreadA(peer, p.guid, username, password);
+              spt.add(pt);
+              Thread T = new Thread(pt);
+              threads.add(T);
+              T.start();
+                      
+        }
+        
+        ArrayList<Account> results = new ArrayList();
+        
+        for (Thread t : threads)
+            t.join();
+        
+        for (SearchPeerThreadA r : spt) {
+            System.out.println("2 Thread results size: " + r.results.size());
+            if (r.results == null) {}
+            else {
+            for (int i = 0; i < r.results.size(); i++) {
+                results.add(r.results.get(i));
+            }
+            }
+            
+        }
+            //append thread.getResult();
+              System.out.println("Size: " + results.size());
+        for (Account M : results) {
+            System.out.println("user: " + M.getUsername() + "\npass: " + M.getPassword() + "\n");
+        }
+            
+        int j = 0;
+        return null;
+    }
+    
+    public void setDFS(DFS dfs) {
+        this.dfs = dfs;
+    }
+    
+     public static void main(String[] args) throws Exception {
+        
+        DFS dfs = new DFS(2000);
+        LoginServices ms = new LoginServices();
+        ms.setDFS(dfs);
+        ms.getAllEntries("TaylorM", "asdf");
+        System.out.println("\n\n\n");
+        //ms.getAllEntries("cas", "ARTIST");
+    }
+    
 }

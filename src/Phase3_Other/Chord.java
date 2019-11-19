@@ -558,11 +558,11 @@ public class Chord extends java.rmi.server.UnicastRemoteObject implements ChordM
     }
     
     @Override
-    public ArrayList<MusicMeta> search(long guidObject, String keyword) throws IOException, RemoteException
+    public ArrayList<MusicMeta> search(long guidObject, String keyword, String kt) throws IOException, RemoteException
     {
             TypeToken<List<MusicMeta>> token = new TypeToken<List<MusicMeta>>() {};
             ArrayList<MusicMeta> meta = new ArrayList();
-            ArrayList<MusicMeta> results = null;
+            ArrayList<MusicMeta> results = new ArrayList();
             // loads in the meta from chunk
             String file = prefix + Long.toString(guidObject);
             try {
@@ -578,10 +578,60 @@ public class Chord extends java.rmi.server.UnicastRemoteObject implements ChordM
             keyword = keyword.toLowerCase();
             for (MusicMeta M : meta) {
   
+                if (kt.equals("SONG")){
                 if (M.getSong().getTitle().toLowerCase().contains(keyword)){
                     //System.out.println("adding: " + M.getSong().getTitle());
                     results.add(M);
                 }
+                }
+                
+                if (kt.equals("ARTIST"))
+                {
+                    if (M.getArtist().getName().toLowerCase().contains(keyword)){
+                    //System.out.println("adding: " + M.getSong().getTitle());
+                    results.add(M);
+                }
+                }
+                
+                
+            }
+            
+            return results;
+
+    }
+    
+    @Override
+    public ArrayList<Account> searchA(long guidObject, String username, String password) throws IOException, RemoteException
+    {
+            TypeToken<List<Account>> token = new TypeToken<List<Account>>() {};
+            ArrayList<Account> meta = new ArrayList();
+            ArrayList<Account> results = new ArrayList();
+            // loads in the meta from chunk
+            String file = prefix + Long.toString(guidObject);
+            try {
+                // Read chunk
+                Reader read = new FileReader(file);
+                // Use GSON
+                meta = new Gson().fromJson(read, token.getType());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            
+            
+            for (Account M : meta) {
+  
+                
+                if (M.getUsername().equals(username)){
+                    if(M.getPassword().equals(password)){
+                    //System.out.println("adding: " + M.getSong().getTitle());
+                    results.add(M);
+                    }
+                }
+                
+                
+                
+                
             }
             
             return results;
