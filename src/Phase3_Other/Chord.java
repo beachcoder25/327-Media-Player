@@ -8,6 +8,8 @@ package Phase3_Other;
 * @since   03-3-2019
 */
 
+import Server.MusicMeta;
+import com.google.gson.Gson;
 import java.rmi.*;
 import java.rmi.registry.*;
 import java.rmi.server.*;
@@ -551,5 +553,38 @@ public class Chord extends java.rmi.server.UnicastRemoteObject implements ChordM
         catch(RemoteException e){
 	       System.out.println("Cannot retrive id of successor or predecessor");
         }
+    }
+    
+    public List<String> search(long guidObject, String keyword, short type) throws IOException, RemoteException
+    {
+            
+            List<String> results;
+            // loads in the meta from chunk
+            try {
+                // Read chunk
+                Reader read = new FileReader(prefix + guidObjec);
+                // Use GSON
+                meta = new Gson().fromJson(read, this.token.getType());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            keyword = keyword.toLowerCase();
+            for (MusicMeta M : this.meta) {
+  
+                if (M.getSong().getTitle().toLowerCase().contains(keyword)){
+                    //System.out.println("adding: " + M.getSong().getTitle());
+                    this.result.add(M);
+                }
+                  // artist search
+                else {
+               if (M.getArtist().getName().toLowerCase().contains(keyword)){
+                //System.out.println("adding: " + M.getSong().getTitle());
+                this.result.add(M);
+            } 
+            }
+            
+            return results;
+
     }
 }

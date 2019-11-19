@@ -43,6 +43,29 @@ public class MusicServices {
                 new Random().nextInt(this.meta_data_unsorted.size()));
     }
     
+    
+    public String getAllEntries(String keyword)
+    {
+        MetaFile f = dfs.searchFile("music");
+        Long n = f.getNumberOfPages();
+        // Create n threads
+        Threads[] thread = new Thread[n];
+        for (i=0; i<n; i++)
+        {
+              Page p = f.getPage(i);
+              ChordMessageInterface peer = dfs.chord.locateSuccessor(p.guid);
+              thread[i].peer = peer;
+              thread[i].start();
+                      
+        }
+        for (i=0; i<n; i++)
+            thread.join();
+        for (i=0; i<n; i++)
+            //append thread.getResult();
+                
+        
+        
+    }
 /**
      * User function that will return a MusicMeta object by search (using either
      * song or artist as search conditions)

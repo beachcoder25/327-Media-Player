@@ -13,7 +13,10 @@ public class SearchDriver {
     ArrayList<MusicMeta> results;
     private String target = "";
     
+    // Get it so this gets file location file in peer
     String fp1 = "Pages_JSON\\music1.json";
+    
+    
     String fp2 = "Pages_JSON\\music2.json";
     String fp3 = "Pages_JSON\\music3.json";
 
