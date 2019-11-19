@@ -23,6 +23,8 @@ public class MusicServices {
     ArrayList<MusicMeta> meta_data_unsorted;
     // Sorted list
     ArrayList<MusicMeta> meta_data_sorted;
+    // SearchDriver
+    private SearchDriver searchDriver;
 
     /**
      * Default constructor. Loads in the meta data for all the songs
@@ -30,9 +32,9 @@ public class MusicServices {
      */
     public MusicServices() {
         // De-serialize the data
-        deserializeData();
+        //deserializeData();
         // Sort the one list that needs to be sorted
-        Collections.sort(this.meta_data_sorted);
+        //Collections.sort(this.meta_data_sorted);
     }
     
     /**

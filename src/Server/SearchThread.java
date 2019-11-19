@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Server;
 
 import java.io.FileReader;
@@ -43,10 +38,13 @@ public class SearchThread implements Runnable{
     // target search with default value
     private String target = "~notarget~";
     
+    // if search target is song, if no -> artist
+    private boolean isSong;
     // constructor
-    public SearchThread(String s, String target) {
+    public SearchThread(String s, String target, boolean isSong) {
         this.filepath = s;
         this.target = target;
+        this.isSong = isSong;
     }
     
     @Override
@@ -79,13 +77,27 @@ public class SearchThread implements Runnable{
         
         this.result = new ArrayList();
         
-        // if song tite contains target, add to result
+        // if song title contains target, add to result
         for (MusicMeta M : this.meta) {
+            
+            // song search
+            if(this.isSong){
             if (M.getSong().getTitle().toLowerCase().contains(this.target.toLowerCase())){
                 //System.out.println("adding: " + M.getSong().getTitle());
                 this.result.add(M);
             }
+            }
+            
+            // artist search
+            else {
+               if (M.getArtist().getName().toLowerCase().contains(this.target.toLowerCase())){
+                //System.out.println("adding: " + M.getSong().getTitle());
+                this.result.add(M);
+            } 
+            }
+            
         }
+        System.out.println("thread size: " + this.result.size());
         
     }
     
