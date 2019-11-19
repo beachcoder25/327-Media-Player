@@ -102,6 +102,7 @@ public class SearchThread implements Runnable{
             }
             
         }
+        System.out.println("thread size: " + this.result.size());
         
     }
     
