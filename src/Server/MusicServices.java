@@ -25,6 +25,8 @@ public class MusicServices {
     ArrayList<MusicMeta> meta_data_sorted;
     // SearchDriver
     private SearchDriver searchDriver;
+    // Metadata result from SearchDriver
+    ArrayList<MusicMeta> meta_data_result;
 
     /**
      * Default constructor. Loads in the meta data for all the songs
@@ -81,15 +83,19 @@ public class MusicServices {
      * @param isSong flag for if the user is searching for a song
      * @return MusicMeta result of the search
      */
-    public String getSong(String s) {
+    public String getSong(String searchString) {
         System.out.println("Hey, we made it here at least");
 
         ArrayList<MusicMeta> metaList = new ArrayList();
         
+        
+        searchDriver = new SearchDriver(searchString);
+        meta_data_result = searchDriver.execute();
+        
         int counter = 0;
 
-        for (MusicMeta M : meta_data_unsorted) {
-            if (M.getSong().getTitle().toLowerCase().contains(s.toLowerCase())) {
+        for (MusicMeta M : meta_data_result) {
+            if (M.getSong().getTitle().toLowerCase().contains(searchString.toLowerCase())) {
                 metaList.add(M);
                 System.out.println("Adding number: " + counter +"\n"
                             + "Name: " + M.getSong().getTitle());

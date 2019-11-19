@@ -23,21 +23,13 @@ public class SearchDriver {
      * @param args the command line arguments
      */
     
-//    String fp1 = "music1.json";
-//    String fp2 = "music2.json";
-//    String fp3 = "music3.json";
-    
-    //test
-//        System.out.println(results.size());
-//        for (MusicMeta m : results) {
-//
-//            System.out.println(m.getSong().getTitle());
-//        }
-    
     
     public static void main(String[] args){
 
-        SearchDriver searchDriver = new SearchDriver("dad");
+        MusicServices mS = new MusicServices();
+        String sResult = mS.getSong("dad");
+        
+        System.out.println(sResult);
     }
     
     
@@ -50,20 +42,16 @@ public class SearchDriver {
             filepathList.add(s);
         }
         
-        results = this.execute();
         
-        System.out.println(results.size());
-        for (MusicMeta m : results) {
+        
 
-            System.out.println(m.getSong().getTitle());
-        }
     }
     
     public ArrayList<MusicMeta> execute() {
 
         ArrayList<Thread> threads = new ArrayList();
         ArrayList<SearchThread> searches = new ArrayList();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < filepathList.size(); i++) {
             SearchThread searchThread = new SearchThread(this.filepathList.get(i), this.target, true);
             searches.add(searchThread);
             Thread tempThread = new Thread(searchThread);
