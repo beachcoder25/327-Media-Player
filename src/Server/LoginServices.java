@@ -32,22 +32,22 @@ public class LoginServices {
      * Loads the accounts from the JSON file.
      */
     public LoginServices() {
-        this.deserializeAccounts();
+//        this.deserializeAccounts();
     }
     
     /**
      * Loads the accounts from the JSON file.
      */
-    private void deserializeAccounts(){
-        try {
-            // File read object.
-            Reader read = new FileReader("accounts.json");
-            // GSON
-            account_list = new Gson().fromJson(read, token.getType());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    private void deserializeAccounts(){
+//        try {
+//            // File read object.
+//            Reader read = new FileReader("accounts.json");
+//            // GSON
+//            account_list = new Gson().fromJson(read, token.getType());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
     /**
      * Checks login credentials against ArrayList of Accounts
      * to validate the user.

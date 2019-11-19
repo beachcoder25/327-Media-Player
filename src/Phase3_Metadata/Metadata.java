@@ -37,40 +37,13 @@ public class Metadata implements IMetaData,  Serializable {
     // Make this a data structure
     // DFS calls methods in Metadata
     public static void main(String[] args) {
-
-        //myTest m = new myTest();
-        //m.name = "AA";
-        
                 
         Metadata mD = new Metadata();
         
+        mD.create("profiles", 1);
         
-//        String name = "MusicJson";
-//        System.out.println(mD.getMetafilePages(name));
-        mD.create("999888", 3000);
-       // mD.append("999888");
-        //mD.delete("999888");
-        //mD.create("NEWfile", "7000");
-        Gson gson = new Gson();
-        
-        
-        System.out.println(mD.serializeMetadata());
-        
-        String s = mD.serializeMetadata();
-        
-        Metadata mD2 = gson.fromJson(s, Metadata.class);
-        
-        mD.delete("999888");
-        System.out.println(mD.serializeMetadata());
-        System.out.println(mD2.serializeMetadata());
-        //System.out.println("Int: " + mD.append("MusicJson"));
-        
-        //mD.move("999888", "SpookySong");
-        
-        
-        
-        //System.out.println(mD.lists());
-
+               
+        System.out.println(mD.serializeMetadata());      
     }
 
     private List<Metafile> metafile;
@@ -89,29 +62,13 @@ public class Metadata implements IMetaData,  Serializable {
         //this.deserializeMetadata();
     }
 
-//    private void deserializeMetadata() {
-//
-//        try (Reader read = new FileReader("metadata.json")) {
-//
-//            metafile = new Gson().fromJson(read, token.getType());
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//    
+    
      public String serializeMetadata() {
 
-       
             Gson gson = new Gson();
-            return gson.toJson(this, Metadata.class);
-
-        
-        
-        
+            return gson.toJson(this, Metadata.class);  
     }
-     
-     
+        
 
     public String getMetafilePages(String name) {
 
@@ -203,13 +160,10 @@ public class Metadata implements IMetaData,  Serializable {
             if (fileName.equals(this.getMetafile().get(i).getName())) {
 
                 Metafile mF = this.getMetafile().get(i);
-//                System.out.println(
-//                        "Name: " + mF.getName()) +
-//                        "Name"
-//                        ;
                 guid = md5(fileName + mF.numPages() + 1);
                 String guidString = String.valueOf(guid);
                 guidString = guidString.substring(0, 8);
+                
                 //TODO: create page to be appended to file
                 newPage.setGuid(guidString);
                 newPage.setCreationTS(mF.getCreationTS());
@@ -268,7 +222,22 @@ public class Metadata implements IMetaData,  Serializable {
         }
     }
 
-    public void removeFile(int index) {
+
+    private long md5(String objectName) {
+        try {
+            MessageDigest m = MessageDigest.getInstance("MD5");
+            m.reset();
+            m.update(objectName.getBytes());
+            BigInteger bigInt = new BigInteger(1, m.digest());
+            return Math.abs(bigInt.longValue());
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+
+        }
+        return 0;
+    }
+
+     public void removeFile(int index) {
         metafile.remove(index);
     }
 
@@ -291,20 +260,5 @@ public class Metadata implements IMetaData,  Serializable {
     public Metafile getFile(int index) {
         return metafile.get(index);
     }
-
-    private long md5(String objectName) {
-        try {
-            MessageDigest m = MessageDigest.getInstance("MD5");
-            m.reset();
-            m.update(objectName.getBytes());
-            BigInteger bigInt = new BigInteger(1, m.digest());
-            return Math.abs(bigInt.longValue());
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-
-        }
-        return 0;
-    }
-
 
 }

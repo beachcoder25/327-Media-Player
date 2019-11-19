@@ -13,12 +13,11 @@ import java.util.Random;
 
 /**
  *
- * @author nicka
+ * @authors nicka, jonah
  */
 public class MusicServices {
     
-    // Token for GSON to load in a list from JSON
-    private TypeToken<List<MusicMeta>> token = new TypeToken<List<MusicMeta>>() {};
+
     // Unsorted list
     ArrayList<MusicMeta> meta_data_unsorted;
     // Sorted list
@@ -29,41 +28,10 @@ public class MusicServices {
     ArrayList<MusicMeta> meta_data_result;
 
     /**
-     * Default constructor. Loads in the meta data for all the songs
-     * from the JSON file using GSON.
+     * Default constructor. 
      */
     public MusicServices() {
-        // De-serialize the data
-        //deserializeData();
-        // Sort the one list that needs to be sorted
-        //Collections.sort(this.meta_data_sorted);
-    }
-    
-    /**
-     * This function deserializes the data from music.json
-     * <p>
-     * To deserialize, we use Gson to convert the .json file to lists of objects
-     * that we are then able to use to process commands from the client.
-     * <\p>
-     */
-    private void deserializeData() {
-        
-        try {
-            // Reader for first list.
-            Reader read = new FileReader("music.json");
-            // Reader for second list.
-            Reader read2 = new FileReader("music.json");
-            // Use GSON
-            meta_data_unsorted = new Gson().fromJson(read, token.getType());
-            meta_data_sorted = new Gson().fromJson(read2, token.getType());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    // Get the list of MetaData
-    public List<MusicMeta> getMetaData(){
-        return this.meta_data_unsorted;
+
     }
     
     /**
@@ -84,7 +52,6 @@ public class MusicServices {
      * @return MusicMeta result of the search
      */
     public String getSong(String searchString) {
-        System.out.println("Hey, we made it here at least");
 
         ArrayList<MusicMeta> metaList = new ArrayList();
         
@@ -110,15 +77,17 @@ public class MusicServices {
     }
     
     // search for artist
-    public String getArtist(String s) {
-        System.out.println("Hey, we made it here at least");
+    public String getArtist(String searchString) {
 
         ArrayList<MusicMeta> metaList = new ArrayList();
         
+        searchDriver = new SearchDriver(searchString);
+        meta_data_result = searchDriver.execute();
+        
         int counter = 0;
 
-        for (MusicMeta M : meta_data_unsorted) {
-            if (M.getArtist().name.toLowerCase().contains(s.toLowerCase())) {
+        for (MusicMeta M : meta_data_result) {
+            if (M.getArtist().name.toLowerCase().contains(searchString.toLowerCase())) {
                 metaList.add(M);
                 System.out.println("Adding number: " + counter +"\n"
                             + "Name: " + M.getSong().getTitle());

@@ -13,9 +13,9 @@ public class SearchDriver {
     ArrayList<MusicMeta> results;
     private String target = "";
     
-    String fp1 = "music1.json";
-    String fp2 = "music2.json";
-    String fp3 = "music3.json";
+    String fp1 = "Pages_JSON\\music1.json";
+    String fp2 = "Pages_JSON\\music2.json";
+    String fp3 = "Pages_JSON\\music3.json";
 
     String[] fpArray = {fp1,fp2,fp3};
 
@@ -27,7 +27,7 @@ public class SearchDriver {
     public static void main(String[] args){
 
         MusicServices mS = new MusicServices();
-        String sResult = mS.getSong("dad");
+        String sResult = mS.getArtist("ad");
         
         System.out.println(sResult);
     }

@@ -1,38 +1,13 @@
 [
   {
-    "name": "music",
-    "size": 11988,
-    "creationTS": "5009",
-    "readTS": "5009",
-    "writeTS": "5009",
+    "name": "profiles",
+    "size": 1,
+    "creationTS": "79367",
+    "readTS": "79367",
+    "writeTS": "79367",
     "referenceCount": "",
-    "numberOfPages": 3,
+    "numberOfPages": 0,
     "maxPageSize": 4096,
-    "pages": [
-      {
-        "guid": "19176237",
-        "size": 3938,
-        "creationTS": "5009",
-        "readTS": "5009",
-        "writeTS": "5009",
-        "referenceCount": "0"
-      },
-      {
-        "guid": "30136572",
-        "size": 3996,
-        "creationTS": "5009",
-        "readTS": "5009",
-        "writeTS": "5009",
-        "referenceCount": "0"
-      },
-      {
-        "guid": "30576193",
-        "size": 4492,
-        "creationTS": "5009",
-        "readTS": "5009",
-        "writeTS": "5009",
-        "referenceCount": "0"
-      }
-    ]
+    "pages": []
   }
 ]
