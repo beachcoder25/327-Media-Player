@@ -2,6 +2,7 @@ package Phase3_Other;
 
 import Phase3_Metadata.Metadata;
 import Phase3_Metadata.Metafile;
+import Server.MusicMeta;
 import java.rmi.*;
 import java.net.*;
 import java.util.*;
@@ -11,6 +12,7 @@ import java.math.BigInteger;
 import java.security.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import java.io.InputStream;
 import java.util.*;
 import java.util.logging.Level;
@@ -18,7 +20,6 @@ import java.util.logging.Logger;
 
 
 /* JSON Format
-
 {"file":
   [
      {"name":"MyFile",
@@ -43,7 +44,7 @@ import java.util.logging.Logger;
 public class DFS
 {
     int port;
-    Chord  chord;
+    public Chord  chord;
     
     
     private long md5(String objectName)
@@ -282,6 +283,33 @@ public class DFS
         writeMetaData(mData);
         
         
+    }
+    
+    public Metafile searchFile(String s) {
+        Gson gson = new Gson();
+        
+        TypeToken<List<Metafile>> token = new TypeToken<List<Metafile>>() {};
+        
+        ArrayList<Metafile> mf = new ArrayList();
+        
+        
+        try {
+            // File read object.
+            Reader read = new FileReader("metadata.json");
+            // GSON
+            mf = new Gson().fromJson(read, token.getType());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        
+        
+        for (Metafile M : mf) {
+            if (M.getName().equals(s)) {
+                return M;
+            }
+        }
+        return null;
     }
     
     

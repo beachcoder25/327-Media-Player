@@ -13,25 +13,53 @@ import java.util.Random;
 
 /**
  *
- * @authors nicka, jonah
+ * @author nicka
  */
 public class MusicServices {
     
-
+    // Token for GSON to load in a list from JSON
+    private TypeToken<List<MusicMeta>> token = new TypeToken<List<MusicMeta>>() {};
     // Unsorted list
     ArrayList<MusicMeta> meta_data_unsorted;
     // Sorted list
     ArrayList<MusicMeta> meta_data_sorted;
-    // SearchDriver
-    private SearchDriver searchDriver;
-    // Metadata result from SearchDriver
-    ArrayList<MusicMeta> meta_data_result;
 
     /**
-     * Default constructor. 
+     * Default constructor. Loads in the meta data for all the songs
+     * from the JSON file using GSON.
      */
     public MusicServices() {
-
+        // De-serialize the data
+        deserializeData();
+        // Sort the one list that needs to be sorted
+        Collections.sort(this.meta_data_sorted);
+    }
+    
+    /**
+     * This function deserializes the data from music.json
+     * <p>
+     * To deserialize, we use Gson to convert the .json file to lists of objects
+     * that we are then able to use to process commands from the client.
+     * <\p>
+     */
+    private void deserializeData() {
+        
+        try {
+            // Reader for first list.
+            Reader read = new FileReader("music.json");
+            // Reader for second list.
+            Reader read2 = new FileReader("music.json");
+            // Use GSON
+            meta_data_unsorted = new Gson().fromJson(read, token.getType());
+            meta_data_sorted = new Gson().fromJson(read2, token.getType());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    // Get the list of MetaData
+    public List<MusicMeta> getMetaData(){
+        return this.meta_data_unsorted;
     }
     
     /**
@@ -43,29 +71,6 @@ public class MusicServices {
                 new Random().nextInt(this.meta_data_unsorted.size()));
     }
     
-    
-    public String getAllEntries(String keyword)
-    {
-        MetaFile f = dfs.searchFile("music");
-        Long n = f.getNumberOfPages();
-        // Create n threads
-        Threads[] thread = new Thread[n];
-        for (i=0; i<n; i++)
-        {
-              Page p = f.getPage(i);
-              ChordMessageInterface peer = dfs.chord.locateSuccessor(p.guid);
-              thread[i].peer = peer;
-              thread[i].start();
-                      
-        }
-        for (i=0; i<n; i++)
-            thread.join();
-        for (i=0; i<n; i++)
-            //append thread.getResult();
-                
-        
-        
-    }
 /**
      * User function that will return a MusicMeta object by search (using either
      * song or artist as search conditions)
@@ -74,18 +79,15 @@ public class MusicServices {
      * @param isSong flag for if the user is searching for a song
      * @return MusicMeta result of the search
      */
-    public String getSong(String searchString) {
+    public String getSong(String s) {
+        System.out.println("Hey, we made it here at least");
 
         ArrayList<MusicMeta> metaList = new ArrayList();
         
-        
-        searchDriver = new SearchDriver(searchString);
-        meta_data_result = searchDriver.execute();
-        
         int counter = 0;
 
-        for (MusicMeta M : meta_data_result) {
-            if (M.getSong().getTitle().toLowerCase().contains(searchString.toLowerCase())) {
+        for (MusicMeta M : meta_data_unsorted) {
+            if (M.getSong().getTitle().toLowerCase().contains(s.toLowerCase())) {
                 metaList.add(M);
                 System.out.println("Adding number: " + counter +"\n"
                             + "Name: " + M.getSong().getTitle());
@@ -100,17 +102,15 @@ public class MusicServices {
     }
     
     // search for artist
-    public String getArtist(String searchString) {
+    public String getArtist(String s) {
+        System.out.println("Hey, we made it here at least");
 
         ArrayList<MusicMeta> metaList = new ArrayList();
         
-        searchDriver = new SearchDriver(searchString);
-        meta_data_result = searchDriver.execute();
-        
         int counter = 0;
 
-        for (MusicMeta M : meta_data_result) {
-            if (M.getArtist().name.toLowerCase().contains(searchString.toLowerCase())) {
+        for (MusicMeta M : meta_data_unsorted) {
+            if (M.getArtist().name.toLowerCase().contains(s.toLowerCase())) {
                 metaList.add(M);
                 System.out.println("Adding number: " + counter +"\n"
                             + "Name: " + M.getSong().getTitle());

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Phase3_Metadata;
 
 import static java.lang.Integer.parseInt;
@@ -106,6 +101,10 @@ public class Metafile {
 
     public List<Page> getPages() {
         return pages;
+    }
+    
+    public Page getPage(int i) {
+        return this.pages.get(i);
     }
 
     public void setPages(List<Page> pages) {

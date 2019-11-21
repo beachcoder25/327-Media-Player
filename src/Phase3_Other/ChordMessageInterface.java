@@ -1,7 +1,10 @@
 package Phase3_Other;
 
+import Server.Account;
+import Server.MusicMeta;
 import java.rmi.*;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface ChordMessageInterface extends Remote
@@ -21,5 +24,6 @@ public interface ChordMessageInterface extends Remote
     public RemoteInputFileStream get(long guidObject) throws IOException, RemoteException;   
     public byte[] get(long guidObject, long offset, int len) throws IOException, RemoteException;  
     public void delete(long guidObject) throws IOException, RemoteException;
-     public List<String> search(long guidObject, String keyword) throws IOException, RemoteException;
+    public ArrayList<MusicMeta> search(long guidObject, String keyword, String kt) throws IOException, RemoteException;
+    public ArrayList<Account> searchA(long guidObject, String username, String password) throws IOException, RemoteException;
 }

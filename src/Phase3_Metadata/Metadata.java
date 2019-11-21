@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Serializable;
 import static java.lang.Integer.parseInt;
+import static java.lang.Long.parseLong;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -165,7 +166,7 @@ public class Metadata implements IMetaData,  Serializable {
                 guidString = guidString.substring(0, 8);
                 
                 //TODO: create page to be appended to file
-                newPage.setGuid(guidString);
+                newPage.setGuid(parseLong(guidString));
                 newPage.setCreationTS(mF.getCreationTS());
                 newPage.setReadTS(mF.getCreationTS());
                 newPage.setWriteTS(mF.getCreationTS());

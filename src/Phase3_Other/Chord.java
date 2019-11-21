@@ -8,8 +8,10 @@ package Phase3_Other;
 * @since   03-3-2019
 */
 
+import Server.Account;
 import Server.MusicMeta;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.rmi.*;
 import java.rmi.registry.*;
 import java.rmi.server.*;
@@ -555,33 +557,81 @@ public class Chord extends java.rmi.server.UnicastRemoteObject implements ChordM
         }
     }
     
-    public List<String> search(long guidObject, String keyword, short type) throws IOException, RemoteException
+    @Override
+    public ArrayList<MusicMeta> search(long guidObject, String keyword, String kt) throws IOException, RemoteException
     {
-            
-            List<String> results;
+            TypeToken<List<MusicMeta>> token = new TypeToken<List<MusicMeta>>() {};
+            ArrayList<MusicMeta> meta = new ArrayList();
+            ArrayList<MusicMeta> results = new ArrayList();
             // loads in the meta from chunk
+            String file = prefix + Long.toString(guidObject);
             try {
                 // Read chunk
-                Reader read = new FileReader(prefix + guidObjec);
+                Reader read = new FileReader(file);
                 // Use GSON
-                meta = new Gson().fromJson(read, this.token.getType());
+                meta = new Gson().fromJson(read, token.getType());
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            
             keyword = keyword.toLowerCase();
-            for (MusicMeta M : this.meta) {
+            for (MusicMeta M : meta) {
   
+                if (kt.equals("SONG")){
                 if (M.getSong().getTitle().toLowerCase().contains(keyword)){
                     //System.out.println("adding: " + M.getSong().getTitle());
-                    this.result.add(M);
+                    results.add(M);
                 }
-                  // artist search
-                else {
-               if (M.getArtist().getName().toLowerCase().contains(keyword)){
-                //System.out.println("adding: " + M.getSong().getTitle());
-                this.result.add(M);
-            } 
+                }
+                
+                if (kt.equals("ARTIST"))
+                {
+                    if (M.getArtist().getName().toLowerCase().contains(keyword)){
+                    //System.out.println("adding: " + M.getSong().getTitle());
+                    results.add(M);
+                }
+                }
+                
+                
+            }
+            
+            return results;
+
+    }
+    
+    @Override
+    public ArrayList<Account> searchA(long guidObject, String username, String password) throws IOException, RemoteException
+    {
+            TypeToken<List<Account>> token = new TypeToken<List<Account>>() {};
+            ArrayList<Account> meta = new ArrayList();
+            ArrayList<Account> results = new ArrayList();
+            // loads in the meta from chunk
+            String file = prefix + Long.toString(guidObject);
+            try {
+                // Read chunk
+                Reader read = new FileReader(file);
+                // Use GSON
+                meta = new Gson().fromJson(read, token.getType());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            
+            
+            for (Account M : meta) {
+  
+                
+                if (M.getUsername().equals(username)){
+                    if(M.getPassword().equals(password)){
+                    //System.out.println("adding: " + M.getSong().getTitle());
+                    results.add(M);
+                    }
+                }
+                
+                
+                
+                
             }
             
             return results;
