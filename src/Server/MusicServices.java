@@ -37,8 +37,8 @@ public class MusicServices {
         DFS dfs = new DFS(2000);
         MusicServices ms = new MusicServices("Test");
         ms.setDFS(dfs);
-        System.out.println(ms.getSong("did"));
-        
+        System.out.println(ms.getArtist("cas"));
+
 //        ms.getAllEntries("did", "SONG");
 //        System.out.println("\n\n\n");
 //        ms.getAllEntries("cas", "ARTIST");
@@ -157,72 +157,28 @@ public class MusicServices {
      * @param isSong flag for if the user is searching for a song
      * @return MusicMeta result of the search
      */
-    public String getSong(String s){
-        System.out.println("Hey, we made it here at least");
+    public String getSong(String s) {
+
+        System.out.println("Search Term: " + s);
 
         ArrayList<MusicMeta> metaListNew = new ArrayList();
 
-        ArrayList<MusicMeta> metaList = new ArrayList();
+        ArrayList<MusicMeta> metaList = null;
+
         try {
             metaList = this.getAllEntries(s, "SONG");
             //metaList = metaList.subList(0, 15);
         } catch (Exception ex) {
             Logger.getLogger(MusicServices.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("metaList size: " + metaList.size());
+
+        System.out.println("metaList size: " + metaList.size() + " Search Term: " + s);
         int counter = 0;
         for (MusicMeta M : metaList) {
             if (M.getSong().getTitle().toLowerCase().contains(s.toLowerCase())) {
                 metaListNew.add(M);
-                System.out.println("Adding number: " + counter +"\n"
-                            + "Name: " + M.getSong().getTitle());
-                counter++;
-                if(counter == 15) break;
-            }
-        }
-
-        Gson gson = new Gson();
-        //System.out.println(gson.toJson(metaList));
-        System.out.println("metaList size: " + metaListNew.size());
-        return gson.toJson(metaListNew);
-    }
-    
-    
-//    public String getSong(String s) {
-//        System.out.println("Hey, we made it here at least");
-//
-//        ArrayList<MusicMeta> metaList = new ArrayList();
-//        
-//        int counter = 0;
-//
-//        for (MusicMeta M : meta_data_unsorted) {
-//            if (M.getSong().getTitle().toLowerCase().contains(s.toLowerCase())) {
-//                metaList.add(M);
-//                System.out.println("Adding number: " + counter +"\n"
+//                    System.out.println("Adding number: " + counter +"\n"
 //                            + "Name: " + M.getSong().getTitle());
-//                counter++;
-//                if(counter == 15) break;
-//            }
-//        }
-//
-//        Gson gson = new Gson();
-//        //System.out.println(gson.toJson(metaList));
-//        return gson.toJson(metaList);
-//    }
-
-    // search for artist
-    public String getArtist(String s) {
-        System.out.println("Hey, we made it here at least");
-
-        ArrayList<MusicMeta> metaList = new ArrayList();
-
-        int counter = 0;
-
-        for (MusicMeta M : meta_data_unsorted) {
-            if (M.getArtist().name.toLowerCase().contains(s.toLowerCase())) {
-                metaList.add(M);
-                System.out.println("Adding number: " + counter + "\n"
-                        + "Name: " + M.getSong().getTitle());
                 counter++;
                 if (counter == 15) {
                     break;
@@ -232,7 +188,43 @@ public class MusicServices {
 
         Gson gson = new Gson();
         //System.out.println(gson.toJson(metaList));
-        return gson.toJson(metaList);
+        System.out.println("metaList size: " + metaListNew.size());
+        return gson.toJson(metaListNew);
+
+    }
+
+
+    public String getArtist(String s) {
+        System.out.println("Search Term: " + s);
+
+        ArrayList<MusicMeta> metaListNew = new ArrayList();
+
+        ArrayList<MusicMeta> metaList = null;
+
+        try {
+            metaList = this.getAllEntries(s, "ARTIST");
+            //metaList = metaList.subList(0, 15);
+        } catch (Exception ex) {
+            Logger.getLogger(MusicServices.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        System.out.println("metaList size: " + metaList.size() + " Search Term: " + s);
+        int counter = 0;
+        for (MusicMeta M : metaList) {
+            if (M.getArtist().name.toLowerCase().contains(s.toLowerCase())) {
+                metaListNew.add(M);
+                System.out.println("Adding number: " + counter +"\n"
+                            + "Name: " + M.getSong().getTitle());
+                counter++;
+                if(counter == 15) break;
+            }
+            
+        }
+
+        Gson gson = new Gson();
+        //System.out.println(gson.toJson(metaList));
+        System.out.println("metaList size: " + metaListNew.size());
+        return gson.toJson(metaListNew);
     }
 
     public String getNormalPage(int index) {
