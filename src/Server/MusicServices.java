@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,16 +22,22 @@ import java.util.logging.Logger;
  * @author nicka
  */
 public class MusicServices {
-
+DFS dfs;
     // Token for GSON to load in a list from JSON
     private TypeToken<List<MusicMeta>> token = new TypeToken<List<MusicMeta>>() {
     };
+
+    public DFS getDfs() {
+        return dfs;
+    }
     // Unsorted list
     ArrayList<MusicMeta> meta_data_unsorted;
     // Sorted list
     ArrayList<MusicMeta> meta_data_sorted;
+    
+    //ArrayList<Accout> accountresults;
 
-    DFS dfs;
+    
 
     public static void main(String[] args) throws Exception {
 
@@ -92,7 +99,7 @@ public class MusicServices {
         return results;
     }
     
-     public ArrayList<Account> getAllEntriesAccounts(String keyword, String keywordType) throws Exception {
+     public ArrayList<Account> getAllEntriesAccounts(String username, String password) throws Exception {
         //DFS dfs = new DFS(2000);
         Metafile metaFile = dfs.searchFile("accounts");
         int n = metaFile.getNumberOfPages();
@@ -106,7 +113,7 @@ public class MusicServices {
             ChordMessageInterface peer = dfs.chord.locateSuccessor(p.guid);
 
             //ChordMessageInterface peer, Long guid, String keyword
-            SearchPeerThreadA pt = new SearchPeerThreadA(peer, p.guid, keyword, keywordType);
+            SearchPeerThreadA pt = new SearchPeerThreadA(peer, p.guid, username, password);
             spt.add(pt);
             Thread T = new Thread(pt);
             threads.add(T);
@@ -145,20 +152,12 @@ public class MusicServices {
      * JSON file using GSON.
      */
     public MusicServices() {
-        try {
-            dfs = new DFS(2000);
-            //DFS dfs = new DFS(2000);
-            // De-serialize the data
-//        deserializeData();
-// Sort the one list that needs to be sorted
-//        Collections.sort(this.meta_data_sorted);
-        } catch (Exception ex) {
-            Logger.getLogger(MusicServices.class.getName()).log(Level.SEVERE, null, ex);
-        }
+     
+        
     }
 
     public MusicServices(String s) {
-
+        
     }
 
     public void setDFS(DFS dfs) {
@@ -387,4 +386,6 @@ public class MusicServices {
         System.out.println("Size of meta: " + meta_list.size());
         return gson.toJson(meta_list);
     }
+    
+    
 }
