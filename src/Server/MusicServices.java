@@ -290,17 +290,27 @@ public class MusicServices {
     }
 
     public String getNormalPage(int index) {
+        
+        ArrayList<MusicMeta> metaList = new ArrayList();
 
         ArrayList<MusicMeta> page = new ArrayList();
+        
+        try {
+            metaList = this.getAllEntries("", "SONG");
+        } catch (Exception ex) {
+            Logger.getLogger(MusicServices.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
 
         int i = index * 15;
         int stop = i + 15;
 
         // tried to do this in a for loop but it wasnt really working out
         while (i != (stop - 1)) {
-            page.add(this.meta_data_unsorted.get(i));
+            page.add(metaList.get(i));
             i++;
         }
+        
 
         Gson gson = new Gson();
         return gson.toJson(page);
@@ -308,16 +318,28 @@ public class MusicServices {
 
     public String getAlphaPage(int index) {
 
+        ArrayList<MusicMeta> metaList = new ArrayList();
+
         ArrayList<MusicMeta> page = new ArrayList();
+        
+        try {
+            metaList = this.getAllEntries("", "SONG");
+        } catch (Exception ex) {
+            Logger.getLogger(MusicServices.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        Collections.sort(metaList);
 
         int i = index * 15;
         int stop = i + 15;
 
         // tried to do this in a for loop but it wasnt really working out
         while (i != (stop - 1)) {
-            page.add(this.meta_data_sorted.get(i));
+            page.add(metaList.get(i));
             i++;
         }
+        
+        
 
         Gson gson = new Gson();
         return gson.toJson(page);
@@ -337,20 +359,10 @@ public class MusicServices {
         Gson gson = new Gson();
         return gson.toJson(meta);
 */
-        
-        System.out.println("here0");
-        
         ArrayList<MusicMeta> metaList = new ArrayList();
-        
-        System.out.println("here1");
-        
-        
-        
-        System.out.println("here2");
         for (int i = 0; i < 15; i++) {
             metaList.add(this.getRandomSong());
         }
-        System.out.println("here3");
         Gson gson = new Gson();
         return gson.toJson(metaList);
     }
