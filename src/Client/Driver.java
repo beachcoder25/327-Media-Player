@@ -18,7 +18,7 @@ public class Driver extends Application {
         // DRIVER SHOULD BE THIS 
         lw = new LoginWindow();
         String user = lw.getValidatedUser();
-        System.out.println("Driver validated user:" + user);
+        System.out.println("Driver validated user: " + user);
         
         if (user == null) // didnt validate and window closed -> exit
             System.exit(0);
