@@ -91,6 +91,54 @@ public class MusicServices {
         int j = 0;
         return results;
     }
+    
+     public ArrayList<Account> getAllEntriesAccounts(String keyword, String keywordType) throws Exception {
+        //DFS dfs = new DFS(2000);
+        Metafile metaFile = dfs.searchFile("accounts");
+        int n = metaFile.getNumberOfPages();
+        // Create n threads
+        ArrayList<SearchPeerThreadA> spt = new ArrayList();
+        ArrayList<Thread> threads = new ArrayList();
+
+        for (int i = 0; i < n; i++) {
+            Page p = metaFile.getPage(i);
+
+            ChordMessageInterface peer = dfs.chord.locateSuccessor(p.guid);
+
+            //ChordMessageInterface peer, Long guid, String keyword
+            SearchPeerThreadA pt = new SearchPeerThreadA(peer, p.guid, keyword, keywordType);
+            spt.add(pt);
+            Thread T = new Thread(pt);
+            threads.add(T);
+            T.start();
+
+        }
+
+        ArrayList<Account> results = new ArrayList();
+
+        for (Thread t : threads) {
+            t.join();
+        }
+
+        for (SearchPeerThreadA r : spt) {
+            //System.out.println("2 Thread results size: " + r.results.size());
+            if (r.results == null) {
+            } else {
+                for (int i = 0; i < r.results.size(); i++) {
+                    results.add(r.results.get(i));
+                }
+            }
+
+        }
+        //append thread.getResult();
+        //System.out.println("Size: " + results.size());
+        for (Account A : results) {
+            //System.out.println(M.getSong().getTitle() + " - " + M.getArtist().getName());
+        }
+
+        int j = 0;
+        return results;
+    }
 
     /**
      * Default constructor. Loads in the meta data for all the songs from the
