@@ -150,8 +150,17 @@ public class MusicServices {
      * @return MusicMeta random song
      */
     public MusicMeta getRandomSong() {
-        return this.meta_data_unsorted.get(
-                new Random().nextInt(this.meta_data_unsorted.size()));
+        //return this.meta_data_unsorted.get(
+          //      new Random().nextInt(this.meta_data_unsorted.size()));
+        ArrayList<MusicMeta> metaList = new ArrayList();
+        
+        try {
+            metaList = this.getAllEntries("", "SONG");
+        } catch (Exception ex) {
+            Logger.getLogger(MusicServices.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return metaList.get(new Random().nextInt(metaList.size()));
     }
 
     /**
@@ -267,6 +276,7 @@ public class MusicServices {
     }
 
     public String getRandomPage() {
+        /*
         Random rand = new Random();
 
         ArrayList<MusicMeta> meta = new ArrayList();
@@ -278,6 +288,23 @@ public class MusicServices {
 
         Gson gson = new Gson();
         return gson.toJson(meta);
+*/
+        
+        System.out.println("here0");
+        
+        ArrayList<MusicMeta> metaList = new ArrayList();
+        
+        System.out.println("here1");
+        
+        
+        
+        System.out.println("here2");
+        for (int i = 0; i < 15; i++) {
+            metaList.add(this.getRandomSong());
+        }
+        System.out.println("here3");
+        Gson gson = new Gson();
+        return gson.toJson(metaList);
     }
 
     public String getPlaylistMeta(String json) {
