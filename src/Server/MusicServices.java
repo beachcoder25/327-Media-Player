@@ -34,9 +34,9 @@ public class MusicServices {
 
     public static void main(String[] args) throws Exception {
 
-        DFS dfs = new DFS(2000);
-        MusicServices ms = new MusicServices("Test");
-        ms.setDFS(dfs);
+        //DFS dfs = new DFS(2000);
+        MusicServices ms = new MusicServices();
+        //ms.setDFS(dfs);
         System.out.println(ms.getArtist("cas"));
 
 //        ms.getAllEntries("did", "SONG");
@@ -97,11 +97,16 @@ public class MusicServices {
      * JSON file using GSON.
      */
     public MusicServices() {
-        //DFS dfs = new DFS(2000);
-        // De-serialize the data
-        deserializeData();
-        // Sort the one list that needs to be sorted
-        Collections.sort(this.meta_data_sorted);
+        try {
+            dfs = new DFS(2000);
+            //DFS dfs = new DFS(2000);
+            // De-serialize the data
+//        deserializeData();
+// Sort the one list that needs to be sorted
+//        Collections.sort(this.meta_data_sorted);
+        } catch (Exception ex) {
+            Logger.getLogger(MusicServices.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public MusicServices(String s) {
@@ -163,7 +168,7 @@ public class MusicServices {
 
         ArrayList<MusicMeta> metaListNew = new ArrayList();
 
-        ArrayList<MusicMeta> metaList = null;
+        ArrayList<MusicMeta> metaList = new ArrayList();
 
         try {
             metaList = this.getAllEntries(s, "SONG");
@@ -199,7 +204,7 @@ public class MusicServices {
 
         ArrayList<MusicMeta> metaListNew = new ArrayList();
 
-        ArrayList<MusicMeta> metaList = null;
+        ArrayList<MusicMeta> metaList = new ArrayList();
 
         try {
             metaList = this.getAllEntries(s, "ARTIST");
