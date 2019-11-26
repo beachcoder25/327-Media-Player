@@ -1,10 +1,13 @@
 package Server;
 
+import Phase3_Other.DFS;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.lang.reflect.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,9 +22,25 @@ public class Dispatcher implements DispatcherInterface {
     private LoginServices loginServices = new LoginServices();
     private PlaylistServices playlistServices = new PlaylistServices();
     private MusicServices musicServices = new MusicServices();
-
+DFS dfs;
+    
     public Dispatcher() {
+        
+        
+        try {
+            dfs = new DFS(2000);
+            //DFS dfs = new DFS(2000);
+            // De-serialize the data
+//        deserializeData();
+// Sort the one list that needs to be sorted
+//        Collections.sort(this.meta_data_sorted);
+        } catch (Exception ex) {
+            Logger.getLogger(MusicServices.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         ListOfObjects = new HashMap<String, Object>();
+        musicServices.setDFS(dfs);
+        loginServices.setDFS(dfs);
     }
 
     /**

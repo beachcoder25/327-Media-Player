@@ -1,9 +1,12 @@
 package Server;
 
+import Phase3_Other.DFS;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -13,11 +16,13 @@ public class CommServer {
 
     private Dispatcher dispatcher = new Dispatcher();
     private final int FRAGMENT_SIZE = 65000;
+    DFS dfs;
 
     /**
      * Default constructor
      */
     public CommServer() {
+        
         System.out.println("Server waiting.");
     }
 
@@ -28,6 +33,11 @@ public class CommServer {
         server.recieveFromClient();
     }
 
+    public DFS getDfs() {
+        return dfs;
+    }
+
+    
     /**
      * Recieves request from client and calls dispatcher
      */

@@ -156,14 +156,14 @@ public class PlaylistServices {
         
         MusicServices ms = new MusicServices();
         
-//        for(int id : P.getList()) {
-//            for(MusicMeta M : ms.getMetaData()) {
-//                if (M.getRelease().getId() == id) {
-//                    meta.add(M);
-//                    break;
-//                }
-//            }
-//        }
+        for(int id : P.getList()) {
+            for(MusicMeta M : ms.getMetaData()) {
+                if (M.getRelease().getId() == id) {
+                    meta.add(M);
+                    break;
+                }
+            }
+        }
         Gson gson = new Gson();
         //Gson gson = new GsonBuilder().setPrettyPrinting().create();
         return gson.toJson(meta);

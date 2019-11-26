@@ -1,6 +1,10 @@
 
 package Server;
 
+import Phase3_Metadata.Metafile;
+import Phase3_Metadata.Page;
+import Phase3_Other.ChordMessageInterface;
+import Phase3_Other.DFS;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -8,9 +12,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Loads accounts from the JSON file, validates the user, and registers
@@ -27,27 +34,29 @@ public class LoginServices {
     // User that successfull logged in.
     private Account current_account;
     
+    DFS dfs;
+    
     /**
      * Default constructor.
      * Loads the accounts from the JSON file.
      */
     public LoginServices() {
-//        this.deserializeAccounts();
+        this.deserializeAccounts();
     }
     
     /**
      * Loads the accounts from the JSON file.
      */
-//    private void deserializeAccounts(){
-//        try {
-//            // File read object.
-//            Reader read = new FileReader("accounts.json");
-//            // GSON
-//            account_list = new Gson().fromJson(read, token.getType());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    private void deserializeAccounts(){
+        try {
+            // File read object.
+            Reader read = new FileReader("accounts.json");
+            // GSON
+            account_list = new Gson().fromJson(read, token.getType());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * Checks login credentials against ArrayList of Accounts
      * to validate the user.
@@ -55,9 +64,89 @@ public class LoginServices {
      * @param password user input
      * @return 
      */
-    public boolean validateAccount(String username, String password){
+    public boolean validateAccount(String username, String password) {
         
-        for(Account A : account_list){
+        
+        //DFS dfs = new DFS(2000);
+        
+        Metafile metaFile = dfs.searchFile("accounts");
+        int n = metaFile.getNumberOfPages();
+        // Create n threads
+        ArrayList<SearchPeerThreadA> spt = new ArrayList();
+        ArrayList<Thread> threads = new ArrayList();
+
+        for (int i = 0; i < n; i++) {
+            Page p = metaFile.getPage(i);
+
+            ChordMessageInterface peer = null;
+            try {
+                peer = dfs.chord.locateSuccessor(p.guid);
+            } catch (RemoteException ex) {
+                Logger.getLogger(LoginServices.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            //ChordMessageInterface peer, Long guid, String keyword
+            SearchPeerThreadA pt = new SearchPeerThreadA(peer, p.guid, username, password);
+            spt.add(pt);
+            Thread T = new Thread(pt);
+            threads.add(T);
+            T.start();
+
+        }
+
+        ArrayList<Account> results = new ArrayList();
+
+        for (Thread t : threads) {
+            try {
+                t.join();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(LoginServices.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        for (SearchPeerThreadA r : spt) {
+            //System.out.println("2 Thread results size: " + r.results.size());
+            if (r.results == null) {
+            } else {
+                for (int i = 0; i < r.results.size(); i++) {
+                    results.add(r.results.get(i));
+                }
+            }
+
+        }
+        //append thread.getResult();
+        //System.out.println("Size: " + results.size());
+        for (Account A : results) {
+            //System.out.println(M.getSong().getTitle() + " - " + M.getArtist().getName());
+        }
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        for(Account A : results){
             if(A.getUsername().equals(username)){
                 if(A.getPassword().equals(password)){
                     this.current_account = A;
@@ -130,6 +219,9 @@ public class LoginServices {
     }
     
     public ArrayList<Account> getAccounts() {
+        
+        MusicServices ms = new MusicServices();
+        //ms.getAllEntries(keyword, keywordType);
         return this.account_list;
     }
     
@@ -149,5 +241,66 @@ public class LoginServices {
                 return A.getID();
         }
         return null;
+    }
+    /*
+    public ArrayList<Account> getAllEntriesAccounts(String keyword, String keywordType) throws Exception {
+        //DFS dfs = new DFS(2000);
+        Metafile metaFile = dfs.searchFile("accounts");
+        int n = metaFile.getNumberOfPages();
+        // Create n threads
+        ArrayList<SearchPeerThreadA> spt = new ArrayList();
+        ArrayList<Thread> threads = new ArrayList();
+
+        for (int i = 0; i < n; i++) {
+            Page p = metaFile.getPage(i);
+
+            ChordMessageInterface peer = dfs.chord.locateSuccessor(p.guid);
+
+            //ChordMessageInterface peer, Long guid, String keyword
+            SearchPeerThreadA pt = new SearchPeerThreadA(peer, p.guid, keyword, keywordType);
+            spt.add(pt);
+            Thread T = new Thread(pt);
+            threads.add(T);
+            T.start();
+
+        }
+
+        ArrayList<Account> results = new ArrayList();
+
+        for (Thread t : threads) {
+            t.join();
+        }
+
+        for (SearchPeerThreadA r : spt) {
+            //System.out.println("2 Thread results size: " + r.results.size());
+            if (r.results == null) {
+            } else {
+                for (int i = 0; i < r.results.size(); i++) {
+                    results.add(r.results.get(i));
+                }
+            }
+
+        }
+        //append thread.getResult();
+        //System.out.println("Size: " + results.size());
+        for (Account A : results) {
+            //System.out.println(M.getSong().getTitle() + " - " + M.getArtist().getName());
+        }
+
+        int j = 0;
+        return results;
+    }
+    */
+    public void setDFS(DFS dfs) {
+        this.dfs = dfs;
+    }
+    
+    public static void main(String[] args) throws Exception {
+
+        
+        LoginServices ls = new LoginServices();
+        
+       System.out.println( ls.validateAccount("TaylorM", "asdf")
+       );
     }
 }

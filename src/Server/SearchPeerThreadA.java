@@ -19,19 +19,22 @@ import java.util.logging.Logger;
  *
  * @author Jonah
  */
-public class SearchPeerThread implements Runnable{
+public class SearchPeerThreadA implements Runnable{
     public ChordMessageInterface peer = null;
     public Long guid;
-    public String keyword;
-    public ArrayList<MusicMeta> results;
-    String kt;
+    
+    public String username;
+    public String password;
+    public ArrayList<Account> results;
+    
    
-    public SearchPeerThread(ChordMessageInterface peer, Long guid, String keyword, String kt){
+    public SearchPeerThreadA(ChordMessageInterface peer, Long guid, String username, String password){
         this.peer = peer;
         this.guid = guid;
-        this.keyword = keyword;
+        this.username = username;
+        this.password = password;
         this.results = results;
-        this.kt = kt;
+        
     }
     
      @Override
@@ -43,7 +46,7 @@ public class SearchPeerThread implements Runnable{
         {
             
             try {
-                results = peer.search(guid, keyword, kt);
+                results = peer.searchA(guid, username, password);
             } catch (IOException ex) {
                 Logger.getLogger(SearchPeerThread.class.getName()).log(Level.SEVERE, null, ex);
             }

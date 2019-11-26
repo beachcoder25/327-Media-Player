@@ -6,7 +6,7 @@ package Phase3_Metadata;
  */
 public class Page {
 
-    private String guid;
+    public long guid;
     private long size;
     private String creationTS;
     private String readTS;
@@ -16,7 +16,7 @@ public class Page {
 
     
     public Page() {
-        this.guid = "a";
+        this.guid = 0;
         this.size = 0;
         this.creationTS = "a";
         this.readTS = "a";
@@ -24,7 +24,7 @@ public class Page {
         this.referenceCount = "a";
     }
 
-    public String getGuid() {
+    public long getGuid() {
         return guid;
     }
 
@@ -32,7 +32,7 @@ public class Page {
         return size;
     }
 
-    public void setGuid(String guid) {
+    public void setGuid(long guid) {
         this.guid = guid;
     }
 

@@ -107,6 +107,10 @@ public class Metafile {
     public List<Page> getPages() {
         return pages;
     }
+    
+    public Page getPage(int i) {
+        return this.pages.get(i);
+    }
 
     public void setPages(List<Page> pages) {
         this.pages = pages;
