@@ -28,31 +28,14 @@ import java.util.Set;
  *
  * @author Jonah
  */
-public class Metadata implements IMetaData,  Serializable {
-
-    
-    static class myTest
-    {
-        public String name;
-    }
-    // Make this a data structure
-    // DFS calls methods in Metadata
-    public static void main(String[] args) {
-                
-        Metadata mD = new Metadata();
-        
-        mD.create("profiles", 1);
-        
-               
-        System.out.println(mD.serializeMetadata());      
-    }
+public class Metadata implements IMetaData, Serializable {
 
     private List<Metafile> metafile;
 //    private TypeToken<List<Metafile>> token = new TypeToken<List<Metafile>>() {
 //    };
     public String pageString = "";
-    public  String metaDataJSON = "metadata.json";
-    public  int maxPageSize = 4096;
+    public String metaDataJSON = "metadata.json";
+    public int maxPageSize = 4096;
 
     public Metadata(List<Metafile> metafile) {
         this.metafile = metafile;
@@ -63,13 +46,11 @@ public class Metadata implements IMetaData,  Serializable {
         //this.deserializeMetadata();
     }
 
-    
-     public String serializeMetadata() {
+    public String serializeMetadata() {
 
-            Gson gson = new Gson();
-            return gson.toJson(this, Metadata.class);  
+        Gson gson = new Gson();
+        return gson.toJson(this, Metadata.class);
     }
-        
 
     public String getMetafilePages(String name) {
 
@@ -90,6 +71,7 @@ public class Metadata implements IMetaData,  Serializable {
 
     @Override
     public void create(String fileName, long size) {
+
         // create file
         Metafile mFile = new Metafile();
 
@@ -111,6 +93,11 @@ public class Metadata implements IMetaData,  Serializable {
         List<Metafile> list = this.getMetafile();
 
         this.save(list);
+
+    }
+
+    public void createPageCopies(String fileName) {
+
     }
 
     @Override
@@ -154,52 +141,56 @@ public class Metadata implements IMetaData,  Serializable {
     @Override
     public int append(String fileName, RemoteInputFileStream data) {
         Page newPage = new Page();
-        
+
         long guid;
         // find file to append page to
         for (int i = 0; i < this.getSize(); i++) {
             if (fileName.equals(this.getMetafile().get(i).getName())) {
 
                 Metafile mF = this.getMetafile().get(i);
-                guid = md5(fileName + mF.numPages() + 1);
-                String guidString = String.valueOf(guid);
-                guidString = guidString.substring(0, 8);
-                
-                //TODO: create page to be appended to file
-                newPage.setGuid(parseLong(guidString));
-                newPage.setCreationTS(mF.getCreationTS());
-                newPage.setReadTS(mF.getCreationTS());
-                newPage.setWriteTS(mF.getCreationTS());
-                
-                long temp = mF.getSize() - (long) data.fileSize;
-                
-                
-                if(temp < 0){
-                    newPage.setSize(0);
-                    
+                String guidString = "-1";
+
+                // REPLICATION
+                for (int j = 0; j < 3; j++) {
+
+                    guid = md5(fileName + mF.numPages() + (i + 1));
+                    guidString = String.valueOf(guid);
+                    guidString = guidString.substring(0, 8);
+
+                    //TODO: create page to be appended to file
+                    newPage.setGuid(parseLong(guidString));
+                    newPage.setCreationTS(mF.getCreationTS());
+                    newPage.setReadTS(mF.getCreationTS());
+                    newPage.setWriteTS(mF.getCreationTS());
+
+                    long temp = mF.getSize() - (long) data.fileSize;
+
+                    if (temp < 0) {
+                        newPage.setSize(0);
+
+                    }
+
+                    newPage.setSize(((long) data.fileSize) + 1);
+                    newPage.setReferenceCount("0");
+
+                    mF.addPagee(newPage);
+                    mF.setNumberOfPages(mF.getNumberOfPages());
+                    this.save(metafile);
                 }
-                
-                newPage.setSize(((long) data.fileSize) + 1);
-                newPage.setReferenceCount("0");
-                
-                
-                mF.addPagee(newPage);
-                mF.setNumberOfPages(mF.getNumberOfPages());
-                this.save(metafile);
-                
+
                 return Integer.parseInt(guidString);
             }
         }
         return 0;
     }
-    
+
     @Override
     public void move(String oldName, String newName) {
-        
-        for (int i = 0; i <  this.getSize(); i++) {
-            
-            if(this.getMetafile().get(i).getName().equals(oldName)){
-                
+
+        for (int i = 0; i < this.getSize(); i++) {
+
+            if (this.getMetafile().get(i).getName().equals(oldName)) {
+
                 Metafile mF = this.getMetafile().get(i);
                 mF.setName(newName);
                 this.save(metafile);
@@ -223,7 +214,6 @@ public class Metadata implements IMetaData,  Serializable {
         }
     }
 
-
     private long md5(String objectName) {
         try {
             MessageDigest m = MessageDigest.getInstance("MD5");
@@ -238,7 +228,7 @@ public class Metadata implements IMetaData,  Serializable {
         return 0;
     }
 
-     public void removeFile(int index) {
+    public void removeFile(int index) {
         metafile.remove(index);
     }
 
