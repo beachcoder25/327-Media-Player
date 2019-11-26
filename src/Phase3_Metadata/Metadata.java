@@ -139,7 +139,46 @@ public class Metadata implements IMetaData, Serializable {
     }
 
     @Override
-    public int append(String fileName, RemoteInputFileStream data) {
+   public int append(String fileName, RemoteInputFileStream data) {
+        Page newPage = new Page();
+
+        long guid;
+        // find file to append page to
+        for (int i = 0; i < this.getSize(); i++) {
+            if (fileName.equals(this.getMetafile().get(i).getName())) {
+
+                Metafile mF = this.getMetafile().get(i);
+                guid = md5(fileName + mF.numPages() + 1);
+                String guidString = String.valueOf(guid);
+                guidString = guidString.substring(0, 8);
+
+                //TODO: create page to be appended to file
+                newPage.setGuid(parseLong(guidString));
+                newPage.setCreationTS(mF.getCreationTS());
+                newPage.setReadTS(mF.getCreationTS());
+                newPage.setWriteTS(mF.getCreationTS());
+
+                long temp = mF.getSize() - (long) data.fileSize;
+
+                if (temp < 0) {
+                    newPage.setSize(0);
+
+                }
+
+                newPage.setSize(((long) data.fileSize) + 1);
+                newPage.setReferenceCount("0");
+
+                mF.addPagee(newPage);
+                mF.setNumberOfPages(mF.getNumberOfPages());
+                this.save(metafile);
+
+                return Integer.parseInt(guidString);
+            }
+        }
+        return 0;
+    }
+    
+    public int appendCopies(String fileName, RemoteInputFileStream data) {
         Page newPage = new Page();
 
         long guid;
@@ -156,6 +195,7 @@ public class Metadata implements IMetaData, Serializable {
                     guid = md5(fileName + mF.numPages() + (i + 1));
                     guidString = String.valueOf(guid);
                     guidString = guidString.substring(0, 8);
+                    System.out.println("guidString: " + guidString);
 
                     //TODO: create page to be appended to file
                     newPage.setGuid(parseLong(guidString));
@@ -167,7 +207,6 @@ public class Metadata implements IMetaData, Serializable {
 
                     if (temp < 0) {
                         newPage.setSize(0);
-
                     }
 
                     newPage.setSize(((long) data.fileSize) + 1);
