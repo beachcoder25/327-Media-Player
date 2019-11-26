@@ -278,7 +278,8 @@ public class DFS
         // data passed in is the new page
         // read metadata
         Metadata mData = readMetaData();
-        int pageGUID = mData.append(filename, data);
+        //int pageGUID = mData.append(filename, data);
+        int pageGUID = mData.appendCopies(filename, data);
         chord.locateSuccessor(pageGUID);
         chord.put(pageGUID, data);
         writeMetaData(mData);

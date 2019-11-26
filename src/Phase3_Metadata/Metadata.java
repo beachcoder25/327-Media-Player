@@ -178,13 +178,15 @@ public class Metadata implements IMetaData, Serializable {
         return 0;
     }
     
-    public int appendCopies(String fileName, RemoteInputFileStream data) {
-        Page newPage = new Page();
+    public int[] appendCopies(String fileName, RemoteInputFileStream data) {
+        
 
+        int[] returnArray = new int[3];
         long guid;
         // find file to append page to
         for (int i = 0; i < this.getSize(); i++) {
             if (fileName.equals(this.getMetafile().get(i).getName())) {
+                Page newPage = new Page();
 
                 Metafile mF = this.getMetafile().get(i);
                 String guidString = "-1";
@@ -192,7 +194,7 @@ public class Metadata implements IMetaData, Serializable {
                 // REPLICATION
                 for (int j = 0; j < 3; j++) {
 
-                    guid = md5(fileName + mF.numPages() + (i + 1));
+                    guid = md5(fileName + mF.numPages() + (j + 1));
                     guidString = String.valueOf(guid);
                     guidString = guidString.substring(0, 8);
                     System.out.println("guidString: " + guidString);
@@ -215,12 +217,14 @@ public class Metadata implements IMetaData, Serializable {
                     mF.addPagee(newPage);
                     mF.setNumberOfPages(mF.getNumberOfPages());
                     this.save(metafile);
+                    returnArray[j] = Integer.parseInt(guidString);
+                    
                 }
 
-                return Integer.parseInt(guidString);
+                return returnArray;
             }
         }
-        return 0;
+        return null;
     }
 
     @Override
