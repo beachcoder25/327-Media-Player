@@ -11,4 +11,8 @@ package Phase4_TwoPhaseCommit;
  */
 public interface CoordinatorInterface {
     
+    public boolean canCommit(Transaction transaction);
+    public void doCommit(Transaction transaction);
+    public void doAbort(Transaction transaction);
+    
 }
