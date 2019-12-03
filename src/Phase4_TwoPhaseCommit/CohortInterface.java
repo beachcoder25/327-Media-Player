@@ -9,13 +9,7 @@ package Phase4_TwoPhaseCommit;
  *
  * @author nicka
  */
-public class Transaction {
-    public enum Operation { WRITE, DELETE };
-    public enum Vote { YES, NO};
-    Long TransactionId;
-    Vote vote;
-    String fileName;
-    Long pageIndex;
+public interface CohortInterface {
+    public void haveCommitted(Transaction transaction);
+    public boolean getDecision(Transaction transaction);
 }
-
-

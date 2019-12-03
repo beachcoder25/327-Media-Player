@@ -5,29 +5,20 @@
  */
 package Phase4_TwoPhaseCommit;
 
-import Phase3_Other.ChordMessageInterface;
-
 /**
  *
  * @author nicka
  */
-public class Coordinator implements CoordinatorInterface {
+public class Cohort implements CohortInterface {
 
     @Override
-    public boolean canCommit(Transaction transaction) {
+    public void haveCommitted(Transaction transaction) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void doCommit(Transaction transaction) {
+    public boolean getDecision(Transaction transaction) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public void doAbort(Transaction transaction) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    
     
 }
