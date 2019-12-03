@@ -42,6 +42,9 @@ public class Coordinator implements CoordinatorInterface {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    //
+    // I believe that the Coordinator can be mapped to the server instance
+    // the participants (cohorts) should be mapped to the CMI Peer instances?
+    // or with these seperate classes being called by those instances.
+    // Not totally sure
     
 }
