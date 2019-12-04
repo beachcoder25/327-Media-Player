@@ -55,15 +55,6 @@ public class DFSCommand
                 dfs.move(oldFileName, newFileName);
             }
             
-//            if (result[0].equals("append")) {
-//                System.out.println("Enter a file whose name you want to append");
-//                String oldFileName = buffer.readLine();
-//                System.out.println("Give path of file"); 
-//                String path = buffer.readLine();
-//                RemoteInputFileStream rI = new RemoteInputFileStream(path);
-//                dfs.append(oldFileName, rI);
-//                
-//            }
             
             if (result[0].equals("touch"))
             {

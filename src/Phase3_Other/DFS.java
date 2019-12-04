@@ -20,7 +20,6 @@ import java.util.logging.Logger;
 
 
 /* JSON Format
-
 {"file":
   [
      {"name":"MyFile",
@@ -162,12 +161,28 @@ public class DFS
     public void writeMetaData(Metadata filesJson) throws Exception
     {
         long guid = md5("Metadata"); // Metadata sector 
-        Gson gson = new Gson();
         
+        Gson gson = new Gson();
+        //gson.
+        //gson.fromJson(filesJson, Metadata.class).toJson()
+        //ystem.out.println(gson.fromJson(filesJson, Metadata.class).toJson());
         
         ChordMessageInterface peer = chord.locateSuccessor(guid); // Dont worry about this too much 
+        
+       // Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        //String s = gson.toJson(filesJson); // Takes JSON object as a string, use GSON prettyBuilder
+        //stem.out.println(gson.toJson(filesJson));
         peer.put(guid, filesJson.serializeMetadata());
         
+        //String s = gson.toJson(filesJson); // Takes JSON object as a string, use GSON prettyBuilder
+//        try{
+//            // Create writer, write, close.
+//            FileWriter write = new FileWriter("metadata.json", false);
+//            write.write(s);
+//            write.close();
+//        }catch(IOException e){
+//            e.printStackTrace();
+//        }
     }
    
 /**
@@ -262,10 +277,15 @@ public class DFS
         // data passed in is the new page
         // read metadata
         Metadata mData = readMetaData();
-        int pageGUID = mData.append(filename, data);
-        chord.locateSuccessor(pageGUID);
-        chord.put(pageGUID, data);
-        writeMetaData(mData);
+        int[] pageGUIDs = mData.appendCopies(filename, data);
+        
+        
+        for(int pageGUID : pageGUIDs){
+            chord.locateSuccessor(pageGUID);
+            chord.put(pageGUID, data);
+            writeMetaData(mData);
+        }
+        
         
         
     }

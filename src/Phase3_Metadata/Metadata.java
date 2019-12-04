@@ -71,6 +71,7 @@ public class Metadata implements IMetaData, Serializable {
 
     @Override
     public void create(String fileName, long size) {
+
         // create file
         Metafile mFile = new Metafile();
 
@@ -92,6 +93,11 @@ public class Metadata implements IMetaData, Serializable {
         List<Metafile> list = this.getMetafile();
 
         this.save(list);
+
+    }
+
+    public void createPageCopies(String fileName) {
+
     }
 
     @Override
@@ -133,7 +139,7 @@ public class Metadata implements IMetaData, Serializable {
     }
 
     @Override
-    public int append(String fileName, RemoteInputFileStream data) {
+   public int append(String fileName, RemoteInputFileStream data) {
         Page newPage = new Page();
 
         long guid;
@@ -170,6 +176,58 @@ public class Metadata implements IMetaData, Serializable {
             }
         }
         return 0;
+    }
+    
+    public int[] appendCopies(String fileName, RemoteInputFileStream data) {
+        
+
+        int[] returnArray = new int[3];
+        long guid;
+        // find file to append page to
+        for (int i = 0; i < this.getSize(); i++) {
+            if (fileName.equals(this.getMetafile().get(i).getName())) {
+                
+
+                Metafile mF = this.getMetafile().get(i);
+                String guidString = "-1";
+
+                // REPLICATION
+                for (int j = 0; j < 3; j++) {
+
+                    Page newPage = new Page();
+                    guid = md5(fileName + mF.numPages() + (j + 1));
+                    guidString = String.valueOf(guid);
+                    guidString = guidString.substring(0, 8);
+                    System.out.println("guidString: " + guidString);
+
+                    //TODO: create page to be appended to file
+                    newPage.setGuid(parseLong(guidString));
+                    newPage.setCreationTS(mF.getCreationTS());
+                    newPage.setReadTS(mF.getCreationTS());
+                    newPage.setWriteTS(mF.getCreationTS());
+
+                    long temp = mF.getSize() - (long) data.fileSize;
+
+                    if (temp < 0) {
+                        newPage.setSize(0);
+                    }
+
+                    newPage.setSize(((long) data.fileSize) + 1);
+                    newPage.setReferenceCount("0");
+
+                    mF.addPagee(newPage);
+                    mF.setNumberOfPages(mF.getNumberOfPages());
+                    
+                    returnArray[j] = Integer.parseInt(guidString);
+                    this.save(metafile);
+                    
+                }
+
+                //return returnArray;
+                return returnArray;
+            }
+        }
+        return null;
     }
 
     @Override
