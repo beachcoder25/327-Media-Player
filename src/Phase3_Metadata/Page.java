@@ -12,7 +12,7 @@ public class Page {
     private String readTS;
     private String writeTS;
     private String referenceCount;
-    //private int fileIDCount; // Used to associate replications of a given page
+    private int fileIDCount; // Used to associate replications of a given page
 
     public Page() {
         this.guid = 0;
@@ -72,11 +72,11 @@ public class Page {
         return referenceCount;
     }
 
-//    public int getFileIDCount() {
-//        return fileIDCount;
-//    }
-//
-//    public void setFileIDCount(int fileIDCount) {
-//        this.fileIDCount = fileIDCount;
-//    }
+    public int getFileIDCount() {
+        return fileIDCount;
+    }
+
+    public void setFileIDCount(int fileIDCount) {
+        this.fileIDCount = fileIDCount;
+    }
 }

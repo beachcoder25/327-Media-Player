@@ -190,6 +190,8 @@ public class Metadata implements IMetaData, Serializable {
 
                 Metafile mF = this.getMetafile().get(i);
                 String guidString = "-1";
+                int max = 100000;
+                int randomNum = (int) (Math.random()*max);
 
                 // REPLICATION
                 for (int j = 0; j < 3; j++) {
@@ -205,6 +207,7 @@ public class Metadata implements IMetaData, Serializable {
                     newPage.setCreationTS(mF.getCreationTS());
                     newPage.setReadTS(mF.getCreationTS());
                     newPage.setWriteTS(mF.getCreationTS());
+                    newPage.setFileIDCount(randomNum);
 
                     long temp = mF.getSize() - (long) data.fileSize;
 
