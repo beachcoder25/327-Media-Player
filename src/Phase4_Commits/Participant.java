@@ -11,7 +11,7 @@ import Phase4_Commits.Transaction.Vote;
 public class Participant {
     
     Transaction transaction;
-    boolean canSave = false;
+    boolean canSave = true;
     
     public Participant(Transaction transaction){
         
