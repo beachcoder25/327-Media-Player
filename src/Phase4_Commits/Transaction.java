@@ -1,5 +1,7 @@
 package Phase4_Commits;
 
+import Phase3_Metadata.Metafile;
+
 /**
  *
  * @author Jonah
@@ -9,20 +11,23 @@ public class Transaction {
     // From Lecture Notes: When you read a file create a file called transaction
     public enum Operation{ WRITE, DELETE };
     public enum Vote{ YES, NO };
-    int TransactionId = 0;
+    
+    Operation operation;
     Vote vote;
     String fileName;
     int pageIndex;
+    int fileIDNum;
     String prefix = "./Pages_JSON/";
 
-    public Transaction(String fileName, int pageIndex) {
+    public Transaction(String fileName, int fileIDNum) {
         
-        this.TransactionId = TransactionId++;
+        
         this.fileName = prefix + fileName;
-        this.pageIndex = pageIndex;
+        this.fileIDNum = fileIDNum;
         
     }
     
+
     public static void main(String[] args){
         Transaction t0;
     }

@@ -1,6 +1,7 @@
 package Phase4_Commits;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -10,6 +11,9 @@ public class Commit implements AtomicCommit{
 
     // Will be used for collecting votes
     private ArrayList<Transaction> transactionList = new ArrayList<Transaction>();
+//    private ArrayList<Participant> participantList = new ArrayList<Participant>();
+    private ArrayList<String> voteResults = new ArrayList<String>();; 
+    private Participant participant;
     
     public static void main(String[] args){
         Transaction t0 = new Transaction("music1", 0);
@@ -29,6 +33,8 @@ public class Commit implements AtomicCommit{
     
     @Override
     public boolean canCommit(Transaction transaction) {
+        
+        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

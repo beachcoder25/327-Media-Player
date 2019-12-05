@@ -2,6 +2,7 @@ package Phase3_Other;
 
 import Phase3_Metadata.Metadata;
 import Phase3_Metadata.Metafile;
+import Phase4_Commits.Transaction;
 import Server.MusicMeta;
 import java.rmi.*;
 import java.net.*;
@@ -45,6 +46,8 @@ public class DFS
 {
     int port;
     public Chord  chord;
+    ArrayList<Transaction> transactionList;
+    
     
     
     private long md5(String objectName)
@@ -81,6 +84,10 @@ public class DFS
                 chord.leave();
             }
         });
+        
+    }
+    
+    public void coordinate(){
         
     }
     
