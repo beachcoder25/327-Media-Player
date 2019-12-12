@@ -18,15 +18,72 @@ public class Transaction {
     int pageIndex;
     int fileIDNum;
     String prefix = "./Pages_JSON/";
+    String readTime;
 
-    public Transaction(String fileName, int fileIDNum) {
+    public Transaction(String fileName, int fileIDNum, String readTime) {
         
         
-        this.fileName = prefix + fileName;
+        this.fileName = fileName;
         this.fileIDNum = fileIDNum;
+        this.readTime = readTime;
         
     }
+
+    public int getFileIDNum() {
+        return fileIDNum;
+    }
+
+    public void setFileIDNum(int fileIDNum) {
+        this.fileIDNum = fileIDNum;
+    }
+
+    public Operation getOperation() {
+        return operation;
+    }
+
+    public Vote getVote() {
+        return vote;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public int getPageIndex() {
+        return pageIndex;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setOperation(Operation operation) {
+        this.operation = operation;
+    }
+
+    public void setVote(Vote vote) {
+        this.vote = vote;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public void setPageIndex(int pageIndex) {
+        this.pageIndex = pageIndex;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
     
+    public String getReadTime() {
+        return readTime;
+    }
+
+    public void setReadTime(String readTime) {
+        this.readTime = readTime;
+    }
 
     public static void main(String[] args){
         Transaction t0;

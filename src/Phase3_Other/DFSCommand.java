@@ -1,6 +1,5 @@
 package Phase3_Other;
 
-
 import java.io.*;
 import com.google.gson.*;
 import com.google.gson.stream.*;
@@ -53,6 +52,10 @@ public class DFSCommand
                 System.out.println("Enter a new name for this file");
                 String newFileName = buffer.readLine();
                 dfs.move(oldFileName, newFileName);
+            }
+            if (result[0].equals("pull")) {
+                System.out.println("Pulling");
+                dfs.pull("", 0);
             }
             
             
