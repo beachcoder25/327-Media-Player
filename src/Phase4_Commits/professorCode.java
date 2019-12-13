@@ -22,12 +22,14 @@ import java.util.logging.Logger;
  */
 public class professorCode {
     
+    Participant participant = new Participant();
+    
     private TypeToken<List<Metafile>> token = new TypeToken<List<Metafile>>() {
     };
     
     // From lab 12/03/2019
     
-    public void tempFileCopy(ArrayList<Metafile> mf_list, Reader read){
+    public void tempFileCopy(ArrayList<Metafile> mf_list, Reader read, Participant participant){
     
         System.out.println("List length: " + mf_list.size());
         // Instantiate
@@ -40,6 +42,7 @@ public class professorCode {
         
         FileWriter fileWriter;
         File file = new File("TEMP_FILEZ/TempMetadata.json");
+        participant.transaction.setTempFileLocation("TEMP_FILEZ/TempMetadata.json");
         try {
             fileWriter = new FileWriter(file, false);
             fileWriter.write(jsonLine);
@@ -51,7 +54,7 @@ public class professorCode {
     }
     
     
-    public long pull(String filename, Page page){
+    public long pull(String filename, Page page, Participant participant){
         
         // Store ReadTimeStamp in filename.transaction
         // return ReadTimeStamp
@@ -68,7 +71,8 @@ public class professorCode {
             mf_list = new Gson().fromJson(read, token.getType());
             
             // Make temp copy
-            this.tempFileCopy(mf_list, read);
+            this.tempFileCopy(mf_list, read, participant);
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -83,17 +87,7 @@ public class professorCode {
                 break;
             }
         }
-        
-        // Making temp copy to file///////////////////////////////////////////////////////////////////////////////////
-        
-        
-        
-            
-        
-        
-        
-        
-        // Making temp copy to file///////////////////////////////////////////////////////////////////////////////////
+       
         
         int i = 0;
         

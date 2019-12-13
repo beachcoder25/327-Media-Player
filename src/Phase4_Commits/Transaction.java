@@ -14,10 +14,22 @@ public class Transaction {
     
     Operation operation;
     Vote vote;
+    
+    static int IDcount = 0;
+    int transactionID = 0;
     String fileName;
     int pageIndex;
     int fileIDNum;
     String prefix = "./Pages_JSON/";
+    String tempFileLocation = "";
+
+    public void setTempFileLocation(String tempFileLocation) {
+        this.tempFileLocation = tempFileLocation;
+    }
+
+    public String getTempFileLocation() {
+        return tempFileLocation;
+    }
     String readTime;
 
     public Transaction(String fileName, int fileIDNum, String readTime) {
@@ -26,6 +38,7 @@ public class Transaction {
         this.fileName = fileName;
         this.fileIDNum = fileIDNum;
         this.readTime = readTime;
+        this.transactionID = IDcount++;
         
     }
 
