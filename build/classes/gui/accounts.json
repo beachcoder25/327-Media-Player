@@ -1,0 +1,26 @@
+[
+    {"account": {
+            "acct": "TaylorM",
+            "pw": "asdf",
+            "playlists": [
+            {"name":"Weird Al"},
+            {"name":"Frank Zappa"}]
+        }
+    },
+    {"account": {
+            "acct": "JonahC",
+            "pw": "qwerty",
+            "playlists": [
+            {"name":"TOOL"},
+            {"name":"Phish"}]
+        }
+    },
+    {"account": {
+            "acct": "NickM",
+            "pw": "1234",
+            "playlists": [
+            {"name":"Primus"},
+            {"name":"Rush"}]
+        }
+    }
+]

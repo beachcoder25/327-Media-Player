@@ -30,9 +30,9 @@ public class Commit implements AtomicCommit{
     
     public static void main(String[] args){
         
-        Transaction t0 = new Transaction("musicJSON", 0, "50");
-        Transaction t1 = new Transaction("musicJSON", 1, "77265");
-        Transaction t2 = new Transaction("musicJSON", 2, "80000");
+        Transaction t0 = new Transaction("musicJSON", "50");
+        Transaction t1 = new Transaction("musicJSON", "77265");
+        Transaction t2 = new Transaction("musicJSON", "80000");
         Commit c = new Commit();
         
         System.out.println(c.canCommit(t0));

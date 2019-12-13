@@ -45,11 +45,10 @@ public class Transaction {
     }
     String readTime;
 
-    public Transaction(String fileName, int fileIDNum, String readTime) {
+    public Transaction(String fileName, String readTime) {
         
         
         this.fileName = fileName;
-        this.fileIDNum = fileIDNum;
         this.readTime = readTime;
         this.transactionID = IDcount++;
         

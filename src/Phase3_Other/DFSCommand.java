@@ -1,5 +1,6 @@
 package Phase3_Other;
 
+import Phase4_Commits.Transaction;
 import java.io.*;
 import com.google.gson.*;
 import com.google.gson.stream.*;
@@ -54,8 +55,12 @@ public class DFSCommand
                 dfs.move(oldFileName, newFileName);
             }
             if (result[0].equals("pull")) {
-                System.out.println("Pulling");
-                dfs.pull("", 0);
+                System.out.println("Enter the name of the desired dile to pull");
+                String fileName = buffer.readLine();
+                long readTime = dfs.pull(fileName);
+                System.out.println(readTime);
+                Transaction transaction = new Transaction(fileName, "" + readTime);
+                System.out.println(transaction.getFileName());
             }
             
             

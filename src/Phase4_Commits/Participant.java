@@ -38,9 +38,9 @@ public class Participant {
     
         static public void main(String args[]) throws Exception {
         
-        Transaction t0 = new Transaction("musicJSON", 0, "50");
-        Transaction t1 = new Transaction("musicJSON", 1, "77265");
-        Transaction t2 = new Transaction("musicJSON", 2, "80000");
+        Transaction t0 = new Transaction("musicJSON", "50");
+        Transaction t1 = new Transaction("musicJSON", "77265");
+        Transaction t2 = new Transaction("musicJSON", "80000");
        
         Participant p = new Participant(t0);
         Participant p1 = new Participant(t1);
@@ -61,17 +61,17 @@ public class Participant {
         
         
         Page page = new Page();
-        long temp = p.pull("musicJSON", page);
+        long temp = p.pull("musicJSON");
         System.out.println("Here is read ts: " + temp + "\nHere is the transID: " + p.transaction.transactionID );
         System.out.println("Filepath: " + p.transaction.tempFileLocation + "\n");
         
         
-        long temp1 = p1.pull("musicJSON", page);
+        long temp1 = p1.pull("musicJSON");
         System.out.println("Here is read ts: " + temp1);
         System.out.println("Filepath: " + p1.transaction.tempFileLocation + "\nHere is the transID: " + p1.transaction.transactionID + "\n");
         
         
-        long temp2 = p2.pull("musicJSON", page);
+        long temp2 = p2.pull("musicJSON");
         System.out.println("Here is read ts: " + temp2);
         System.out.println("Filepath: " + p2.transaction.tempFileLocation + "\nHere is the transID: " + p2.transaction.transactionID );
         
@@ -169,10 +169,11 @@ public class Participant {
     }
     
     
-    public long pull(String filename, Page page){
+    public long pull(String filename){
         
         // Store ReadTimeStamp in filename.transaction
         // return ReadTimeStamp
+        System.out.println("Heressssss");
         
         
         ArrayList<Metafile> mf_list = new ArrayList();
@@ -202,9 +203,7 @@ public class Participant {
                 break;
             }
         }
-       
         
-        int i = 0;
         
         return Long.parseLong(readTS);
     }

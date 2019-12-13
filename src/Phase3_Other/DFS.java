@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import Phase4_Commits.Participant;
 
 
 /* JSON Format
@@ -48,7 +49,7 @@ public class DFS
     int port;
     public Chord  chord;
     ArrayList<Transaction> transactionList;
-    
+    Participant participant;
     
     
     private long md5(String objectName)
@@ -164,7 +165,7 @@ public class DFS
     
 /**
  * writeMetaData write the metadata back to the chord
-  *
+ *
  */
     public void writeMetaData(Metadata filesJson) throws Exception
     {
@@ -295,11 +296,11 @@ public class DFS
     }
     
     
-    public long pull(String filename, int fileIDCount){
+    public long pull(String filename){
         
         // Store ReadTimeStamp in filename.transaction
         // return ReadTimeStamp
         System.out.println("Pulled");
-        return 0;
+        return participant.pull(filename);
     }
 }
