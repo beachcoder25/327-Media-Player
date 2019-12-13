@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Scanner;
 
 /**
  *
@@ -72,8 +73,17 @@ public class Commit implements AtomicCommit{
         
         // Read occured after last write which tells us that
         // this is the most recent change being committed.
-        if (Long.parseLong(transaction.getReadTime()) > writeTS)
-            return true;
+        if (Long.parseLong(transaction.getReadTime()) > writeTS) {
+            System.out.println("What is your vote? YES/NO");
+            
+            Scanner scan = new Scanner(System.in);
+            
+            String participantInput = scan.nextLine();
+            
+            if (participantInput.equals("YES"))
+                return true;
+        }
+            
         
         // else return false
         return false;
