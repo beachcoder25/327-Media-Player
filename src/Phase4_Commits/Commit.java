@@ -20,7 +20,8 @@ public class Commit implements AtomicCommit{
     // Will be used for collecting votes
     private ArrayList<Transaction> transactionList = new ArrayList<Transaction>();
     private ArrayList<Participant> participantList = new ArrayList<Participant>();
-    private ArrayList<String> voteResults = new ArrayList<String>();; 
+    private ArrayList<String> voteResults = new ArrayList<String>();
+    private Participant chosenParticipant = new Participant();
     
      private TypeToken<List<Metafile>> token = new TypeToken<List<Metafile>>() {
     };
@@ -102,10 +103,18 @@ public class Commit implements AtomicCommit{
         
         for(Participant p : participantList){
             
-            this.voteResults.add(p.transaction.getStringVote());
+            
+            
+            if(p.transaction.getStringVote().equals("YES")){
+                if(this.canCommit(p.transaction)){
+                    doCommit(p.transaction);
+                }
+            } 
+            
+            else if(p.transaction.getStringVote().equals("YES")){
+                doAbort(p.transaction);
+            }
         }
-
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.  
     }
     
     public void addParticipant(Participant p){
