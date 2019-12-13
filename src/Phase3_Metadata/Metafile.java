@@ -39,6 +39,8 @@ public class Metafile {
         this.pages = new ArrayList();
         
     }
+    
+
 
     public String getName() {
         return name;

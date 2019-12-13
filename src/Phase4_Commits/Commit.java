@@ -56,10 +56,10 @@ public class Commit implements AtomicCommit{
         
         System.out.println(transaction.getFileName());
         for (Metafile m : mf_list) {
-            System.out.println("here");
+            //System.out.println("here");
             if (m.getName().equals(transaction.getFileName()))
             {
-                System.out.println("here2");
+                //System.out.println("here2");
                 Long.parseLong(m.getWriteTS());
                 writeTS = Long.parseLong(m.getWriteTS());
                 break;
