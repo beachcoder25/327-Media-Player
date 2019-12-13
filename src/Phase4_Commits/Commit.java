@@ -99,22 +99,27 @@ public class Commit implements AtomicCommit{
     }
 
     @Override
-    public void getDecision(Transaction transaction) {
+    public boolean getDecision() {
         
+        boolean returnValue = false;
         for(Participant p : participantList){
             
             
             
             if(p.transaction.getStringVote().equals("YES")){
                 if(this.canCommit(p.transaction)){
+                    chosenParticipant = p;
                     doCommit(p.transaction);
+                    returnValue = true;
                 }
             } 
             
-            else if(p.transaction.getStringVote().equals("YES")){
-                doAbort(p.transaction);
+            else if(p.transaction.getStringVote().equals("NO")){
+                //doAbort(p.transaction);
             }
         }
+        
+        return returnValue;
     }
     
     public void addParticipant(Participant p){

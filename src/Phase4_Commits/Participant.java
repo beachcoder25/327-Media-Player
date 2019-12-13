@@ -51,6 +51,10 @@ public class Participant {
         c.addParticipant(p1);
         c.addParticipant(p2);
         
+        p2.makeChangesToFile();
+        
+        System.out.println("Commit decision: " + c.getDecision());
+        
         System.out.println("List size: " + c.getListSize());   
         
         /*     test for pull */

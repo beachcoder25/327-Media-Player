@@ -16,6 +16,6 @@ public interface AtomicCommit {
     public void doAbort(Transaction transaction);
     public void haveCommitted(Transaction transaction, Object participant); // Change second parameter
 //    public boolean getDecision(Transaction transaction);
-    public void getDecision(Transaction transaction);
+    public boolean getDecision();
     
 }
