@@ -15,7 +15,7 @@ import java.util.Scanner;
  *
  * @author Jonah
  */
-public class Commit implements AtomicCommit{
+public class Coordinator implements AtomicCommit{
 
     // Will be used for collecting votes
     private ArrayList<Transaction> transactionList = new ArrayList<Transaction>();
@@ -30,7 +30,7 @@ public class Commit implements AtomicCommit{
         Transaction t0 = new Transaction("musicJSON", 0, "50");
         Transaction t1 = new Transaction("musicJSON", 1, "77265");
         Transaction t2 = new Transaction("musicJSON", 2, "80000");
-        Commit c = new Commit();
+        Coordinator c = new Coordinator();
         
         System.out.println(c.canCommit(t0));
         System.out.println(c.canCommit(t1));
