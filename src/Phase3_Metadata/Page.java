@@ -12,9 +12,8 @@ public class Page {
     private String readTS;
     private String writeTS;
     private String referenceCount;
+    private int fileIDCount; // Used to associate replications of a given page
 
-
-    
     public Page() {
         this.guid = 0;
         this.size = 0;
@@ -22,6 +21,7 @@ public class Page {
         this.readTS = "a";
         this.writeTS = "a";
         this.referenceCount = "a";
+        //this.fileIDCount = 0;
     }
 
     public long getGuid() {
@@ -68,11 +68,15 @@ public class Page {
         return writeTS;
     }
 
-    /*
-    [{"guid":"46312", "size": "1024", "creationTS":"1256933732","readTS":"1256953732", "writeTS":"1256953732", "referenceCount":"0
-     */
     public String getReferenceCount() {
         return referenceCount;
     }
 
+    public int getFileIDCount() {
+        return fileIDCount;
+    }
+
+    public void setFileIDCount(int fileIDCount) {
+        this.fileIDCount = fileIDCount;
+    }
 }

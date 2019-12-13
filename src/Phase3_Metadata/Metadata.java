@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -44,6 +46,12 @@ public class Metadata implements IMetaData, Serializable {
     public Metadata() {
         this.metafile = new ArrayList<Metafile>();
         //this.deserializeMetadata();
+    }
+    
+    public void tempFileCopy() {
+        
+        System.out.println(this);
+        
     }
 
     public String serializeMetadata() {
@@ -190,6 +198,8 @@ public class Metadata implements IMetaData, Serializable {
 
                 Metafile mF = this.getMetafile().get(i);
                 String guidString = "-1";
+                int max = 100000;
+                int randomNum = (int) (Math.random()*max);
 
                 // REPLICATION
                 for (int j = 0; j < 3; j++) {
@@ -205,6 +215,7 @@ public class Metadata implements IMetaData, Serializable {
                     newPage.setCreationTS(mF.getCreationTS());
                     newPage.setReadTS(mF.getCreationTS());
                     newPage.setWriteTS(mF.getCreationTS());
+                    newPage.setFileIDCount(randomNum);
 
                     long temp = mF.getSize() - (long) data.fileSize;
 

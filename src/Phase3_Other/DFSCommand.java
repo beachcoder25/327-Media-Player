@@ -1,6 +1,5 @@
 package Phase3_Other;
 
-
 import java.io.*;
 import com.google.gson.*;
 import com.google.gson.stream.*;
@@ -54,16 +53,11 @@ public class DFSCommand
                 String newFileName = buffer.readLine();
                 dfs.move(oldFileName, newFileName);
             }
+            if (result[0].equals("pull")) {
+                System.out.println("Pulling");
+                dfs.pull("", 0);
+            }
             
-//            if (result[0].equals("append")) {
-//                System.out.println("Enter a file whose name you want to append");
-//                String oldFileName = buffer.readLine();
-//                System.out.println("Give path of file"); 
-//                String path = buffer.readLine();
-//                RemoteInputFileStream rI = new RemoteInputFileStream(path);
-//                dfs.append(oldFileName, rI);
-//                
-//            }
             
             if (result[0].equals("touch"))
             {

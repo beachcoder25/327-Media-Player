@@ -54,48 +54,47 @@ DFS dfs;
     public ArrayList<MusicMeta> getAllEntries(String keyword, String keywordType) throws Exception {
         //DFS dfs = new DFS(2000);
         Metafile metaFile = dfs.searchFile("musicJSON");
-        int n = metaFile.getNumberOfPages();
+        int numPages = metaFile.getNumberOfPages();
         // Create n threads
-        ArrayList<SearchPeerThread> spt = new ArrayList();
+        ArrayList<SearchPeerThread> searchPeerThreadList = new ArrayList();
         ArrayList<Thread> threads = new ArrayList();
 
-        for (int i = 0; i < n; i++) {
-            Page p = metaFile.getPage(i);
+        for (int i = 0; i < numPages; i++) {
+            Page page = metaFile.getPage(i);
 
-            ChordMessageInterface peer = dfs.chord.locateSuccessor(p.guid);
+            ChordMessageInterface peer = dfs.chord.locateSuccessor(page.guid);
 
             //ChordMessageInterface peer, Long guid, String keyword
-            SearchPeerThread pt = new SearchPeerThread(peer, p.guid, keyword, keywordType);
-            spt.add(pt);
-            Thread T = new Thread(pt);
-            threads.add(T);
-            T.start();
+            SearchPeerThread peerThread = new SearchPeerThread(peer, page.guid, keyword, keywordType);
+            searchPeerThreadList.add(peerThread);
+            Thread thread = new Thread(peerThread);
+            threads.add(thread);
+            thread.start();
 
         }
 
         ArrayList<MusicMeta> results = new ArrayList();
 
-        for (Thread t : threads) {
-            t.join();
+        for (Thread thread : threads) {
+            thread.join();
         }
 
-        for (SearchPeerThread r : spt) {
-            //System.out.println("2 Thread results size: " + r.results.size());
-            if (r.results == null) {
+        for (SearchPeerThread peerThread : searchPeerThreadList) {
+            
+            if (peerThread.results == null) {
             } else {
-                for (int i = 0; i < r.results.size(); i++) {
-                    results.add(r.results.get(i));
+                for (int i = 0; i < peerThread.results.size(); i++) {
+                    results.add(peerThread.results.get(i));
                 }
             }
 
         }
-        //append thread.getResult();
-        //System.out.println("Size: " + results.size());
+        
         for (MusicMeta M : results) {
             //System.out.println(M.getSong().getTitle() + " - " + M.getArtist().getName());
         }
 
-        int j = 0;
+    
         return results;
     }
     

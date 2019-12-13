@@ -2,6 +2,8 @@ package Phase3_Other;
 
 import Phase3_Metadata.Metadata;
 import Phase3_Metadata.Metafile;
+import Phase3_Metadata.Page;
+import Phase4_Commits.Transaction;
 import Server.MusicMeta;
 import java.rmi.*;
 import java.net.*;
@@ -20,7 +22,6 @@ import java.util.logging.Logger;
 
 
 /* JSON Format
-
 {"file":
   [
      {"name":"MyFile",
@@ -46,6 +47,8 @@ public class DFS
 {
     int port;
     public Chord  chord;
+    ArrayList<Transaction> transactionList;
+    
     
     
     private long md5(String objectName)
@@ -82,6 +85,10 @@ public class DFS
                 chord.leave();
             }
         });
+        
+    }
+    
+    public void coordinate(){
         
     }
     
@@ -162,28 +169,9 @@ public class DFS
     public void writeMetaData(Metadata filesJson) throws Exception
     {
         long guid = md5("Metadata"); // Metadata sector 
-        
         Gson gson = new Gson();
-        //gson.
-        //gson.fromJson(filesJson, Metadata.class).toJson()
-        //ystem.out.println(gson.fromJson(filesJson, Metadata.class).toJson());
-        
         ChordMessageInterface peer = chord.locateSuccessor(guid); // Dont worry about this too much 
-        
-       // Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        //String s = gson.toJson(filesJson); // Takes JSON object as a string, use GSON prettyBuilder
-        //stem.out.println(gson.toJson(filesJson));
         peer.put(guid, filesJson.serializeMetadata());
-        
-        //String s = gson.toJson(filesJson); // Takes JSON object as a string, use GSON prettyBuilder
-//        try{
-//            // Create writer, write, close.
-//            FileWriter write = new FileWriter("metadata.json", false);
-//            write.write(s);
-//            write.close();
-//        }catch(IOException e){
-//            e.printStackTrace();
-//        }
     }
    
 /**
@@ -192,9 +180,6 @@ public class DFS
  */
     public void move(String oldName, String newName) throws Exception
     {
-        // TODO:  Change the name in Metadata
-        // Write Metadata
-        
         Metadata mData = readMetaData();
         mData.move(oldName, newName);
         writeMetaData(mData);
@@ -221,9 +206,6 @@ public class DFS
  */
     public void create(String fileName, long fileSize) throws Exception
     {
-         // TODO: Create the file fileName by adding a new entry to the Metadata
-        // Write Metadata
-
         Metadata mData = readMetaData();
         
         // add file to meta data
@@ -231,12 +213,6 @@ public class DFS
         
         // At the end write again if you make a change
         writeMetaData(mData);
-        
-        // NEXT STEPS:
-        // Most idifficult will be integrating with musicStreaming
-        // Consider when you move
-        
-        
     }
     
 /**
@@ -280,6 +256,7 @@ public class DFS
         Metadata mData = readMetaData();
         int[] pageGUIDs = mData.appendCopies(filename, data);
         
+        
         for(int pageGUID : pageGUIDs){
             chord.locateSuccessor(pageGUID);
             chord.put(pageGUID, data);
@@ -318,7 +295,11 @@ public class DFS
     }
     
     
-    // Create file 
-     
-    
+    public long pull(String filename, int fileIDCount){
+        
+        // Store ReadTimeStamp in filename.transaction
+        // return ReadTimeStamp
+        System.out.println("Pulled");
+        return 0;
+    }
 }
