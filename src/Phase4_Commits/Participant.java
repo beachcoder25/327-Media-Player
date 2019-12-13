@@ -8,11 +8,15 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -50,7 +54,7 @@ public class Participant {
         c.addParticipant(p1);
         c.addParticipant(p2);
 
-        p2.makeChangesToFile();
+        
 
         
 
@@ -72,6 +76,7 @@ public class Participant {
 //        System.out.println("Here is read ts: " + temp2);
 //        System.out.println("Filepath: " + p2.transaction.tempFileLocation + "\nHere is the transID: " + p2.transaction.transactionID );
 //        
+        p2.makeChangesToFile();
 
         System.out.println("Commit decision: " + c.getDecision());
 
@@ -126,9 +131,39 @@ public class Participant {
 
     }
 
-    public void makeChangesToFile() {
+    public void makeChangesToFile() throws FileNotFoundException {
 
+        LocalTime now = LocalTime.now(ZoneId.systemDefault()); // LocalTime = 14:42:43.062
+        String ts = String.valueOf(now.toSecondOfDay()); // Int = 52963
+        
+        int max = 100000;
+        int randomNum = (int) (Math.random()*max);
+        
+        ArrayList<Metafile> mf_list = new ArrayList();
+        System.out.println("Temp file location: " + this.transaction.getTempFileLocation());
+        Reader read = new FileReader(this.transaction.getTempFileLocation());
+        mf_list = new Gson().fromJson(read, token.getType());
+        Page page = new Page();
+        page.setGuid(12345678);
+        page.setSize(1);
+        page.setCreationTS(ts);
+        page.setReadTS(ts);
+        page.setWriteTS(ts);
+        page.setReferenceCount("0");
+        page.setFileIDCount(randomNum);
+        
+        for(Metafile m : mf_list){
+            if(m.getName().equals("accountsJSON")){
+                System.out.println("HERE!!!");
+                m.addPagee(page);
+                
+            }
+        }
+        
+        
         // Make changes to file
+        
+        
         // Update Vote to yes because changes were made
         this.transaction.stringVote = "YES";
     }
