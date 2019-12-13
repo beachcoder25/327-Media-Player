@@ -4,6 +4,7 @@ import Phase3_Metadata.Metafile;
 import java.util.ArrayList;
 import java.util.List;
 import Phase3_Other.Chord;
+import Phase4_Commits.Transaction.Vote;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.FileReader;
@@ -18,11 +19,13 @@ public class Commit implements AtomicCommit{
 
     // Will be used for collecting votes
     private ArrayList<Transaction> transactionList = new ArrayList<Transaction>();
-//    private ArrayList<Participant> participantList = new ArrayList<Participant>();
+    private ArrayList<Participant> participantList = new ArrayList<Participant>();
     private ArrayList<String> voteResults = new ArrayList<String>();; 
-    private Participant participant;
+    
      private TypeToken<List<Metafile>> token = new TypeToken<List<Metafile>>() {
     };
+     
+    
     
     public static void main(String[] args){
         
@@ -95,8 +98,22 @@ public class Commit implements AtomicCommit{
     }
 
     @Override
-    public boolean getDecision(Transaction transaction) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void getDecision(Transaction transaction) {
+        
+        for(Participant p : participantList){
+            
+            this.voteResults.add(p.transaction.getStringVote());
+        }
+
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.  
+    }
+    
+    public void addParticipant(Participant p){
+        this.participantList.add(p);
+    }
+    
+    public int getListSize(){
+        return this.participantList.size();
     }
     
 }

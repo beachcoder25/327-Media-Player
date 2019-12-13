@@ -15,6 +15,7 @@ public class Transaction {
     Operation operation;
     Vote vote;
     
+    String stringVote = "NO";
     static int IDcount = 0;
     int transactionID = 0;
     String fileName;
@@ -29,6 +30,18 @@ public class Transaction {
 
     public String getTempFileLocation() {
         return tempFileLocation;
+    }
+
+    public String getStringVote() {
+        return stringVote;
+    }
+
+    public static int getIDcount() {
+        return IDcount;
+    }
+
+    public int getTransactionID() {
+        return transactionID;
     }
     String readTime;
 

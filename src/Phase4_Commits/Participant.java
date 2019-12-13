@@ -46,6 +46,12 @@ public class Participant {
         Participant p1 = new Participant(t1);
         Participant p2 = new Participant(t2);
         
+        Commit c = new Commit();
+        c.addParticipant(p);
+        c.addParticipant(p1);
+        c.addParticipant(p2);
+        
+        System.out.println("List size: " + c.getListSize());   
         
         /*     test for pull */
         
@@ -126,7 +132,7 @@ public class Participant {
         // Make changes to file
         
         // Update Vote to yes because changes were made
-        this.transaction.vote = Vote.YES;
+        this.transaction.stringVote = "YES";
     }
 
     
