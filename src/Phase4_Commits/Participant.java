@@ -1,4 +1,3 @@
-
 package Phase4_Commits;
 
 import Phase3_Metadata.Metafile;
@@ -23,65 +22,60 @@ import java.util.logging.Logger;
  * @author Jonah
  */
 public class Participant {
-    
+
     static int copyID = 0;
     Transaction transaction;
     boolean canSave = true;
     private TypeToken<List<Metafile>> token = new TypeToken<List<Metafile>>() {
     };
-    
-    
-    public Participant(){
-        
-        
+
+    public Participant() {
+
     }
-    
-        static public void main(String args[]) throws Exception {
-        
+
+    static public void main(String args[]) throws Exception {
+
         Transaction t0 = new Transaction("musicJSON", 0, "50");
         Transaction t1 = new Transaction("musicJSON", 1, "77265");
         Transaction t2 = new Transaction("musicJSON", 2, "80000");
-       
+
         Participant p = new Participant(t0);
         Participant p1 = new Participant(t1);
         Participant p2 = new Participant(t2);
         
+        System.out.println(p.transaction.getTempFileLocation());
+
         Commit c = new Commit();
         c.addParticipant(p);
         c.addParticipant(p1);
         c.addParticipant(p2);
-        
+
         p2.makeChangesToFile();
+
         
-        System.out.println("Commit decision: " + c.getDecision());
-        
-        System.out.println("List size: " + c.getListSize());   
-        
+
+        System.out.println("List size: " + c.getListSize());
+
         /*     test for pull */
-        
-        
         Page page = new Page();
         long temp = p.pull("musicJSON", page);
-        System.out.println("Here is read ts: " + temp + "\nHere is the transID: " + p.transaction.transactionID );
-        System.out.println("Filepath: " + p.transaction.tempFileLocation + "\n");
-        
-        
+//        System.out.println("Here is read ts: " + temp + "\nHere is the transID: " + p.transaction.transactionID );
+//        System.out.println("Filepath: " + p.transaction.tempFileLocation + "\n");
+//        
+
         long temp1 = p1.pull("musicJSON", page);
-        System.out.println("Here is read ts: " + temp1);
-        System.out.println("Filepath: " + p1.transaction.tempFileLocation + "\nHere is the transID: " + p1.transaction.transactionID + "\n");
-        
-        
+//        System.out.println("Here is read ts: " + temp1);
+//        System.out.println("Filepath: " + p1.transaction.tempFileLocation + "\nHere is the transID: " + p1.transaction.transactionID + "\n");
+//        
+
         long temp2 = p2.pull("musicJSON", page);
-        System.out.println("Here is read ts: " + temp2);
-        System.out.println("Filepath: " + p2.transaction.tempFileLocation + "\nHere is the transID: " + p2.transaction.transactionID );
-        
-        
-        
-        
-        
-        
+//        System.out.println("Here is read ts: " + temp2);
+//        System.out.println("Filepath: " + p2.transaction.tempFileLocation + "\nHere is the transID: " + p2.transaction.transactionID );
+//        
+
+        System.out.println("Commit decision: " + c.getDecision());
+
         /* TEST FOR PUSH */
-        
         // get what we currently have to test
 //        TypeToken<List<Metafile>> token = new TypeToken<List<Metafile>>() {
 //        };
@@ -124,174 +118,159 @@ public class Participant {
 //        
 //        p.push("musicJSON");
     }
-    
-    public Participant(Transaction transaction){
-        
+
+    public Participant(Transaction transaction) {
+
         this.transaction = transaction;
         this.transaction.vote = Vote.YES;
+
     }
-    
-    public void makeChangesToFile(){
-        
+
+    public void makeChangesToFile() {
+
         // Make changes to file
-        
         // Update Vote to yes because changes were made
         this.transaction.stringVote = "YES";
     }
 
-    
     // From lab 12/03/2019
-    
-    public void tempFileCopy(ArrayList<Metafile> mf_list, Reader read){
-    
+    public void tempFileCopy(ArrayList<Metafile> mf_list, Reader read) {
+
         //System.out.println("List length: " + mf_list.size());
         // Instantiate
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         // Create JSON with GSON.
         String jsonLine = gson.toJson(mf_list);
         //System.out.println("JSON DATA: \n" + jsonLine);
-        
-        
-        
+
         FileWriter fileWriter;
         String tempCopyPath = "TEMP_FILEZ/" + copyID++ + "TempMetadata.json";
-        
+
         File file = new File(tempCopyPath);
-        this.transaction.setTempFileLocation(tempCopyPath);  
+        this.transaction.setTempFileLocation(tempCopyPath);  // This line
+
         try {
             fileWriter = new FileWriter(file, false);
             fileWriter.write(jsonLine);
-            fileWriter.close();    
+            fileWriter.close();
         } catch (IOException ex) {
             Logger.getLogger(professorCode.class.getName()).log(Level.SEVERE, null, ex);
         }
-    
+
     }
-    
-    
-    public long pull(String filename, Page page){
-        
+
+    public long pull(String filename, Page page) {
+
         // Store ReadTimeStamp in filename.transaction
         // return ReadTimeStamp
-        
-        
         ArrayList<Metafile> mf_list = new ArrayList();
-       
-        
+
         try {
             // Reader
             Reader read = new FileReader("metadata.json");
 
             // Use GSON
             mf_list = new Gson().fromJson(read, token.getType());
-            
+
             // Make temp copy
             this.tempFileCopy(mf_list, read);
-            
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
-        System.out.println("MetaFile name: " + filename);
+
+        //System.out.println("MetaFile name: " + filename);
         int j = 0;
         String readTS = "";
         for (Metafile m : mf_list) {
-            if (m.getName().equals(filename))
-            {
+            if (m.getName().equals(filename)) {
                 readTS = m.getReadTS();
                 break;
             }
         }
-       
-        
+
         int i = 0;
-        
+
         return Long.parseLong(readTS);
     }
-    
-    public boolean push(String filename){
-        
-        // Filepath to the temp file we are pushing
-        
-        /* THIS NEEDS TO BE UPDATED TO WHAT THE TEMP WILL BE CALLED */
-        String temporaryFileFilepath = "taylorTempMetafile.json";
-        
+
+    public boolean push(String filename, String tempFileLocation) {
+
         // Read in the teamp file
         Metafile newMetafile;
-        
+
         try {
             // Reader
-            Reader read = new FileReader(temporaryFileFilepath);
-            
+            System.out.println("TEMP: " + tempFileLocation);
+            Reader read = new FileReader(tempFileLocation);
+
             // Use GSON
             newMetafile = new Gson().fromJson(read, Metafile.class);
-            
+
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
-        
-        // Read what is currently there
+
+        // Read what is currently there in metadata
         ArrayList<Metafile> metafileList = new ArrayList();
-        
+
         try {
             // Reader
             Reader read = new FileReader("metadata.json");
-            
+
             // Use GSON
             metafileList = new Gson().fromJson(read, token.getType());
-            
+
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
-        
+
         // Set array element with updated Metafile
-        for(Metafile M : metafileList) {
-            if(M.getName().equals(filename)) {
+        for (Metafile M : metafileList) {
+            if (M.getName().equals(filename)) {
                 System.out.println("M TS: " + M.getWriteTS());
                 System.out.println("New TS: " + newMetafile.getWriteTS());
                 M = newMetafile;
-                System.out.println("Found metafile");
-                
+                //System.out.println("Found metafile");
+
                 System.out.println("After changes TS: " + M.getWriteTS() + "\n\n");
-                
+
                 break;
             }
         }
-        
+
         /* Write to file */
-        
         // Instantiate
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         // Create JSON with GSON.
         String jsonLine = gson.toJson(metafileList);
         //System.out.println("JSON DATA: \n" + jsonLine);
-        try{
+        try {
             // Create writer, write, close.
             FileWriter fileWriter = new FileWriter("metadataTemp.json", false);
-            System.out.println("Old TS: " + newMetafile.getWriteTS());   
+            System.out.println("Old TS: " + newMetafile.getWriteTS());
             metafileList.get(0).setWriteTS(newMetafile.getWriteTS());
             System.out.println("New TS: " + metafileList.get(0).getWriteTS());
-            
+
             fileWriter.write(jsonLine);
             fileWriter.close();
-            
-        }catch(IOException e){
+
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
-        
+
         // Write success, return true
         return true;
     }
-    
-    
-    public void writeAction(){
+
+    public void writeAction() {
         this.transaction.operation = Operation.WRITE;
     }
-    
-    public void deleteAction(){
+
+    public void deleteAction() {
         this.transaction.operation = Operation.DELETE;
     }
 }
